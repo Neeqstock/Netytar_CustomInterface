@@ -8,6 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/eyexframework.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/neeqdmis.dll")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/neeqdmis.pdb")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/rawinput.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/rawinput_x64.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/rawinput_x86.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("libraries/tobii.eyex.client.dll")]
