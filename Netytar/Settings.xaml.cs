@@ -33,6 +33,27 @@ namespace Netytar
 
             Application.Current.Resources["MyButtonStyle"] = style;
         }
+
+        private void btnPanwood_Click(object sender, RoutedEventArgs e)
+        {
+            rbtPanwood.IsChecked = true;
+            SettingsManager.Background = Backgrounds.Panwood;
+        }
+
+        private void btnLightwood_Click(object sender, RoutedEventArgs e)
+        {
+            rbtLightwood.IsChecked = true;
+        }
+
+        private void btnMidwood_Click(object sender, RoutedEventArgs e)
+        {
+            rbtMidwood.IsChecked = true;
+        }
+
+        private void btnDarkwood_Click(object sender, RoutedEventArgs e)
+        {
+            rbtDarkwood.IsChecked = true;
+        }
     }
  }
 

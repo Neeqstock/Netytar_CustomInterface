@@ -8,11 +8,10 @@
     Title="Settings"
     Width="1200"
     Height="800"
-    MaxWidth="1200"
-    MaxHeight="800"
+
     Background="Black"
     WindowStartupLocation="CenterScreen"
-    WindowState="Normal"
+    WindowState="Maximized"
     WindowStyle="ToolWindow"
     mc:Ignorable="d">
     <Window.Resources>
@@ -74,7 +73,7 @@
         <!--  LAMPEGGIA  -->
         <Storyboard x:Key="OnClick">
             <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetName="button"
+                Storyboard.TargetName="btnDarkwood"
                 Storyboard.TargetProperty="(UIElement.Visibility)"
                 Duration="0:0:10">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
@@ -85,7 +84,7 @@
         </Storyboard>
         <Storyboard x:Key="OnClick1">
             <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetName="button1"
+                Storyboard.TargetName="btnLightwood"
                 Storyboard.TargetProperty="(UIElement.Visibility)"
                 Duration="0:0:10">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
@@ -96,7 +95,7 @@
         </Storyboard>
         <Storyboard x:Key="OnClick2">
             <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetName="button2"
+                Storyboard.TargetName="btnPanwood"
                 Storyboard.TargetProperty="(UIElement.Visibility)"
                 Duration="0:0:10">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
@@ -107,7 +106,7 @@
         </Storyboard>
         <Storyboard x:Key="OnClick3">
             <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetName="button3"
+                Storyboard.TargetName="btnMidwood"
                 Storyboard.TargetProperty="(UIElement.Visibility)"
                 Duration="0:0:10">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
@@ -150,16 +149,16 @@
 
     </Window.Resources>
     <Window.Triggers>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="button">
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnDarkwood">
             <BeginStoryboard Storyboard="{StaticResource OnClick}" />
         </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="button1">
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnLightwood">
             <BeginStoryboard Storyboard="{StaticResource OnClick1}" />
         </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="button2">
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnPanwood">
             <BeginStoryboard Storyboard="{StaticResource OnClick2}" />
         </EventTrigger>
-        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="button3">
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="btnMidwood">
             <BeginStoryboard Storyboard="{StaticResource OnClick3}" />
         </EventTrigger>
     </Window.Triggers>
@@ -183,52 +182,56 @@
                     <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="294*" />
+                    <ColumnDefinition Width="54*" />
+                    <ColumnDefinition Width="241*"/>
+                    <ColumnDefinition Width="294*" />
+                    <ColumnDefinition Width="294*" />
                 </Grid.ColumnDefinitions>
 
                 <Button
-                    x:Name="button"
-                    Grid.Column="3"
-                    Width="175"
-                    Height="410"
+                    x:Name="btnDarkwood"
+                    Grid.Column="4"
+                    Width="170"
+                    Height="400"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Click="button_Click"
-                    Style="{DynamicResource MyButtonStyle}">
-                    <Image Source="C:\Users\Entica\Documents\GitHub\Netytar_CustomInterface\Netytar_CustomInterface\Netytar\Images\Backgrounds\DarkWood.png" Stretch="Fill" />
+                    Click="btnDarkwood_Click"   
+                    Style="{DynamicResource MyButtonStyle}" Margin="59.8,101,59.6,101.8">
+                    <Image Source="Images/Backgrounds/Darkwood.png" Stretch="Fill" />
                 </Button>
                 <Button
-                    x:Name="button1"
-                    Grid.Column="1"
-                    Width="175"
-                    Height="410"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Style="{DynamicResource MyButtonStyle}">
-                    <Image Source="C:\Users\Entica\Documents\GitHub\Netytar_CustomInterface\Netytar_CustomInterface\Netytar\Images\Backgrounds\LightWood.jpg" Stretch="Fill" />
-                </Button>
-                <Button
-                    x:Name="button3"
+                    x:Name="btnLightwood"
                     Grid.Column="2"
-                    Width="175"
-                    Height="410"
+                    Width="170"
+                    Height="400"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Style="{DynamicResource MyButtonStyle}">
-                    <Image Source="C:\Users\Entica\Documents\GitHub\Netytar_CustomInterface\Netytar_CustomInterface\Netytar\Images\Backgrounds\MidWood.png" Stretch="Fill" />
+                    Click="btnLightwood_Click" 
+                    Style="{DynamicResource MyButtonStyle}" Margin="5.8,101,59.8,101.8">
+                    <Image Source="Images\Backgrounds\LightWood.jpg" Stretch="Fill" />
                 </Button>
                 <Button
-                    x:Name="button2"
-                    Grid.Column="0"
-                    Width="175"
-                    Height="410"
+                    x:Name="btnMidwood"
+                    Grid.Column="3"
+                    Width="170"
+                    Height="400"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Style="{DynamicResource MyButtonStyle}">
-                    <Image Source="C:\Users\Entica\Documents\GitHub\Netytar_CustomInterface\Netytar_CustomInterface\Netytar\Images\Backgrounds\PanWood.png" Stretch="Fill" />
+                    Click="btnMidwood_Click"    
+                    Style="{DynamicResource MyButtonStyle}" Margin="59.2,101,59.2,101.8">
+                    <Image Source="Images\Backgrounds\MidWood.png" Stretch="Fill" />
+                </Button>
+                <Button
+                    x:Name="btnPanwood"
+                    Grid.Column="0"
+                    Width="170"
+                    Height="400"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="btnPanwood_Click"
+                    Style="{DynamicResource MyButtonStyle}" Margin="60,101,59.4,101.8">
+                    <Image Source="Images\Backgrounds\PanWood.png" Stretch="Fill" />
                 </Button>
 
                 <!--  LABEL  -->
@@ -236,7 +239,7 @@
                     Grid.Row="0"
                     Width="120"
                     Height="35"
-                    Margin="93,21,92.4,0"
+                    Margin="88,21,86.4,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Black"
@@ -246,10 +249,10 @@
                     Foreground="White" />
                 <Label
                     Grid.Row="0"
-                    Grid.Column="3"
+                    Grid.Column="4"
                     Width="120"
                     Height="35"
-                    Margin="93,21,92.4,0"
+                    Margin="87.8,21,86.6,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Black"
@@ -259,10 +262,10 @@
                     Foreground="White" />
                 <Label
                     Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Width="120"
                     Height="35"
-                    Margin="93,21,92.4,0"
+                    Margin="33.8,21,86.8,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Black"
@@ -272,10 +275,10 @@
                     Foreground="White" />
                 <Label
                     Grid.Row="0"
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Width="120"
                     Height="35"
-                    Margin="93,21,92.4,0"
+                    Margin="87.2,21,87.2,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Black"
@@ -286,30 +289,34 @@
 
                 <!--  RADIO BUTTON  -->
                 <RadioButton
+                    Name ="rbtPanwood"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Margin="131,0,132,23"
+                    Margin="132,0,133.4,22.8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource MyRadioBtn}" />
                 <RadioButton
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="131,0,132,23"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MyRadioBtn}" />
-                <RadioButton
+                    Name ="rbtLightwood"
                     Grid.Row="0"
                     Grid.Column="2"
-                    Margin="131,0,132,23"
+                    Margin="78.8,0,132.8,22.8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource MyRadioBtn}" />
                 <RadioButton
+                    Name = "rbtMidwood"
                     Grid.Row="0"
                     Grid.Column="3"
-                    Margin="131,0,132,23"
+                    Margin="132.2,0,133.2,22.8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Style="{StaticResource MyRadioBtn}" />
+                <RadioButton
+                    Name="rbtDarkwood"
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    Margin="132.8,0,133.6,22.8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource MyRadioBtn}" />
@@ -325,18 +332,7 @@
                     Content="INGRANDISCI"
                     FontSize="23"
                     Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" />
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Width="170"
-                    Height="50"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="INGRANDISCI"
-                    FontSize="23"
-                    Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" />
+                    Style="{DynamicResource ControlStyle1}" Margin="62,15.2,62.4,14.8" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="2"
@@ -347,7 +343,7 @@
                     Content="INGRANDISCI"
                     FontSize="23"
                     Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" />
+                    Style="{DynamicResource ControlStyle1}" Margin="8.8,15.2,61.8,14.8" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="3"
@@ -358,7 +354,18 @@
                     Content="INGRANDISCI"
                     FontSize="23"
                     Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" />
+                    Style="{DynamicResource ControlStyle1}" Margin="62.2,15.2,62.2,14.8" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    Width="170"
+                    Height="50"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="INGRANDISCI"
+                    FontSize="23"
+                    Foreground="White"
+                    Style="{DynamicResource ControlStyle1}" Margin="61.8,15.2,62.6,14.8" />
             </Grid>
         </TabItem>
 
