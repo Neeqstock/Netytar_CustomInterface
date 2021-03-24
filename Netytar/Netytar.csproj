@@ -88,6 +88,7 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsManager.cs" />
     <Compile Include="Surface\AutoScroller.cs" />
     <Compile Include="Surface\ButtonsSettings\ButtonsSettingsInvert.cs" />
     <Compile Include="Surface\ButtonsSettings\ButtonsSettingsStandard.cs" />
@@ -195,6 +196,8 @@
     <Resource Include="Images\Sparks\source.gif" />
     <Resource Include="Images\Sparks\spark1.gif" />
     <Resource Include="Images\Sparks\spark3.gif" />
+    <Resource Include="Images\Icons\Piu.png" />
+    <Resource Include="Images\Icons\min.jpg" />
     <Content Include="Libraries\EyeXFramework.dll" />
     <Content Include="Libraries\NeeqDMIs.dll" />
     <Content Include="Libraries\NeeqDMIs.pdb" />

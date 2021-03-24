@@ -8,8 +8,8 @@
     Title="Settings"
     Width="1200"
     Height="800"
-
     Background="Black"
+    ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     WindowStyle="ToolWindow"
@@ -43,7 +43,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
         </Style>
 
         <!--  RADIOBUTTON  -->
@@ -55,7 +54,7 @@
                     <ControlTemplate TargetType="RadioButton">
                         <Ellipse
                             x:Name="ellipse"
-                            Width="29"
+                            Width="30"
                             Height="40"
                             Fill="White"
                             Stroke="White"
@@ -167,7 +166,7 @@
     <TabControl
         Background="Black"
         BorderBrush="BurlyWood"
-        BorderThickness="6">
+        BorderThickness="7">
         <TabItem
             Width="260"
             Height="60"
@@ -178,194 +177,220 @@
             Header="Sfondo">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
                     <RowDefinition />
                     <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="294*" />
-                    <ColumnDefinition Width="54*" />
-                    <ColumnDefinition Width="241*"/>
-                    <ColumnDefinition Width="294*" />
-                    <ColumnDefinition Width="294*" />
-                </Grid.ColumnDefinitions>
-
-                <Button
-                    x:Name="btnDarkwood"
-                    Grid.Column="4"
-                    Width="170"
-                    Height="400"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnDarkwood_Click"   
-                    Style="{DynamicResource MyButtonStyle}" Margin="59.8,101,59.6,101.8">
-                    <Image Source="Images/Backgrounds/Darkwood.png" Stretch="Fill" />
-                </Button>
-                <Button
-                    x:Name="btnLightwood"
-                    Grid.Column="2"
-                    Width="170"
-                    Height="400"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnLightwood_Click" 
-                    Style="{DynamicResource MyButtonStyle}" Margin="5.8,101,59.8,101.8">
-                    <Image Source="Images\Backgrounds\LightWood.jpg" Stretch="Fill" />
-                </Button>
-                <Button
-                    x:Name="btnMidwood"
-                    Grid.Column="3"
-                    Width="170"
-                    Height="400"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnMidwood_Click"    
-                    Style="{DynamicResource MyButtonStyle}" Margin="59.2,101,59.2,101.8">
-                    <Image Source="Images\Backgrounds\MidWood.png" Stretch="Fill" />
-                </Button>
-                <Button
-                    x:Name="btnPanwood"
-                    Grid.Column="0"
-                    Width="170"
-                    Height="400"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="btnPanwood_Click"
-                    Style="{DynamicResource MyButtonStyle}" Margin="60,101,59.4,101.8">
-                    <Image Source="Images\Backgrounds\PanWood.png" Stretch="Fill" />
-                </Button>
-
-                <!--  LABEL  -->
                 <Label
                     Grid.Row="0"
-                    Width="120"
-                    Height="35"
-                    Margin="88,21,86.4,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
+                    Width="auto"
+                    Height="auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
                     Background="Black"
-                    Content="SFONDO 1"
-                    FontSize="22"
-                    FontWeight="Bold"
+                    Content="Qui puoi scegliere l'immagine da utilizzare come sfondo da mettere sotto il programma "
+                    FontSize="25"
                     Foreground="White" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    Width="120"
-                    Height="35"
-                    Margin="87.8,21,86.6,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Background="Black"
-                    Content="SFONDO 4"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Foreground="White" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Width="120"
-                    Height="35"
-                    Margin="33.8,21,86.8,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Background="Black"
-                    Content="SFONDO 2"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Foreground="White" />
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Width="120"
-                    Height="35"
-                    Margin="87.2,21,87.2,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Background="Black"
-                    Content="SFONDO 3"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Foreground="White" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        x:Name="btnDarkwood"
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Width="170"
+                        Height="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="btnDarkwood_Click"
+                        Style="{DynamicResource MyButtonStyle}">
+                        <Image Source="Images/Backgrounds/Darkwood.png" Stretch="Fill" />
+                    </Button>
+                    <Button
+                        x:Name="btnLightwood"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Width="170"
+                        Height="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="btnLightwood_Click"
+                        Style="{DynamicResource MyButtonStyle}">
+                        <Image Source="Images\Backgrounds\LightWood.jpg" Stretch="Fill" />
+                    </Button>
+                    <Button
+                        x:Name="btnMidwood"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="170"
+                        Height="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="btnMidwood_Click"
+                        Style="{DynamicResource MyButtonStyle}">
+                        <Image Source="Images\Backgrounds\MidWood.png" Stretch="Fill" />
+                    </Button>
+                    <Button
+                        x:Name="btnPanwood"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="170"
+                        Height="400"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="btnPanwood_Click"
+                        Style="{DynamicResource MyButtonStyle}">
+                        <Image Source="Images\Backgrounds\PanWood.png" Stretch="Fill" />
+                    </Button>
 
-                <!--  RADIO BUTTON  -->
-                <RadioButton
-                    Name ="rbtPanwood"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="132,0,133.4,22.8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MyRadioBtn}" />
-                <RadioButton
-                    Name ="rbtLightwood"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Margin="78.8,0,132.8,22.8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MyRadioBtn}" />
-                <RadioButton
-                    Name = "rbtMidwood"
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Margin="132.2,0,133.2,22.8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MyRadioBtn}" />
-                <RadioButton
-                    Name="rbtDarkwood"
-                    Grid.Row="0"
-                    Grid.Column="4"
-                    Margin="132.8,0,133.6,22.8"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MyRadioBtn}" />
+                    <!--  LABEL  -->
+                    <Label
+                        Grid.Row="1"
+                        Width="130"
+                        Height="40"
+                        Margin="85.8,21,86.6,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="Black"
+                        Content="SFONDO 1"
+                        FontSize="25"
+                        FontWeight="Bold"
+                        Foreground="White" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Width="130"
+                        Height="40"
+                        Margin="85.8,21,86.6,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="Black"
+                        Content="SFONDO 4"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="White" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="130"
+                        Height="40"
+                        Margin="85.8,21,86.6,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="Black"
+                        Content="SFONDO 2"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="White" />
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Width="130"
+                        Height="40"
+                        Margin="85.8,21,86.6,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Background="Black"
+                        Content="SFONDO 3"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="White" />
 
-                <!--  BOTTONI INGRANDISCI  -->
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Width="170"
-                    Height="50"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="INGRANDISCI"
-                    FontSize="23"
-                    Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" Margin="62,15.2,62.4,14.8" />
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Width="170"
-                    Height="50"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="INGRANDISCI"
-                    FontSize="23"
-                    Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" Margin="8.8,15.2,61.8,14.8" />
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="3"
-                    Width="170"
-                    Height="50"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="INGRANDISCI"
-                    FontSize="23"
-                    Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" Margin="62.2,15.2,62.2,14.8" />
-                <Button
-                    Grid.Row="1"
-                    Grid.Column="4"
-                    Width="170"
-                    Height="50"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="INGRANDISCI"
-                    FontSize="23"
-                    Foreground="White"
-                    Style="{DynamicResource ControlStyle1}" Margin="61.8,15.2,62.6,14.8" />
+                    <!--  RADIO BUTTON  -->
+                    <RadioButton
+                        Name="rbtPanwood"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="130,0,130,22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MyRadioBtn}" />
+                    <RadioButton
+                        Name="rbtLightwood"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="130,0,130,22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MyRadioBtn}" />
+                    <RadioButton
+                        Name="rbtMidwood"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="130,0,130,22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MyRadioBtn}" />
+                    <RadioButton
+                        Name="rbtDarkwood"
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="130,0,130,22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MyRadioBtn}" />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="294*" />
+                    </Grid.ColumnDefinitions>
+                    <!--  BOTTONI INGRANDISCI  -->
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Width="170"
+                        Height="50"
+                        Margin="62,15,62,15"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="INGRANDISCI"
+                        FontSize="23"
+                        Foreground="White"
+                        Style="{DynamicResource ControlStyle1}" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="170"
+                        Height="50"
+                        Margin="62,15,62,15"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="INGRANDISCI"
+                        FontSize="23"
+                        Foreground="White"
+                        Style="{DynamicResource ControlStyle1}" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Width="170"
+                        Height="50"
+                        Margin="62,15,62,15"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="INGRANDISCI"
+                        FontSize="23"
+                        Foreground="White"
+                        Style="{DynamicResource ControlStyle1}" />
+                    <Button
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        Width="170"
+                        Height="50"
+                        Margin="62,15,62,15"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="INGRANDISCI"
+                        FontSize="23"
+                        Foreground="White"
+                        Style="{DynamicResource ControlStyle1}" />
+                </Grid>
             </Grid>
         </TabItem>
 
@@ -379,40 +404,210 @@
             FontWeight="UltraBold"
             Header="Linee">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="1"
-                    Width="720"
-                    Height="470"
-                    Margin="20"
-                    HorizontalAlignment="Right"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="90" />
+                    <RowDefinition Height="330" />
+                    <RowDefinition Height="330" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Width="auto"
+                    Height="80"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
-                    BorderBrush="SandyBrown"
-                    BorderThickness="6">
-                    <StackPanel
-                        Grid.Column="1"
-                        Width="720"
-                        Height="470"
-                        Margin="0,-6.4,-3.4,-6"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Stretch" />
-                </Border>
-                <Slider
-                    x:Name="slider"
-                    Grid.Column="0"
-                    Width="290"
-                    Height="20"
+                    Background="Black"
+                    Content="Qui puoi scegliere la dimensione delle linee e dei pallini per il tuo programma, cioè lo spessore della linea  rossa che collega le due note&#xA;e lo spessore dei pallini che rappresentano le note suonate."
+                    FontSize="22"
+                    Foreground="White" />
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Black"
+                        Content="SCEGLI LO SPESSORE DELLE LINEE"
+                        Foreground="White" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="610" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                x:Name="Btn_Primo"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Width="170"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="White"
+                                Click="Btn_Primo_Click">
+                                <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
+                            </Button>
+                            <Button
+                                x:Name="Btn_Secondo"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="170"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="White"
+                                Click="Btn_Secondo_Click">
+                                <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
+                            </Button>
+                        </Grid>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Width="500"
+                            Height="120"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Stretch"
+                            BorderBrush="SandyBrown"
+                            BorderThickness="6">
+                            <Line
+                                x:Name="line"
+                                MinWidth="490"
+                                MinHeight="90"
+                                MaxWidth="500"
+                                MaxHeight="150"
+                                Stretch="UniformToFill"
+                                Stroke="Red"
+                                StrokeThickness="3"
+                                X1="1" />
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <!--  PARTE SOTTO PALLINI  -->
+                <Grid Grid.Row="2" Margin="0,0,0,60">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="220" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Black"
+                        Content="SCEGLI LO SPESSORE DEI PALLINI"
+                        Foreground="White" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="610" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                x:Name="Btn_Prim_One"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Width="170"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="White"
+                                Click="Btn_Prim_One_Click">
+                                <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
+                            </Button>
+                            <Button
+                                x:Name="Btn_Second_Two"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="170"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="White"
+                                Click="Btn_Second_Two_Click">
+                                <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
+                            </Button>
+                        </Grid>
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="500"
+                            Height="120"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderBrush="SandyBrown"
+                            BorderThickness="6">
+                            <Ellipse
+                                x:Name="elli"
+                                Width="35"
+                                Height="35"
+                                Margin="0,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Fill="Black"
+                                Stroke="Blue"
+                                StrokeThickness="10" />
+                        </Border>
+                    </Grid>
+                </Grid>
+                <!--  LINEE SEPARATRICI  -->
+                <Line
+                    Grid.Row="1"
+                    Width="auto"
+                    VerticalAlignment="Bottom"
+                    Stretch="UniformToFill"
+                    Stroke="SandyBrown"
+                    StrokeThickness="5"
+                    X1="1" />
+                <Line
+                    Grid.Row="0"
+                    Width="auto"
+                    VerticalAlignment="Bottom"
+                    Stretch="UniformToFill"
+                    Stroke="SandyBrown"
+                    StrokeThickness="5"
+                    X1="1" />
+            </Grid>
+        </TabItem>
+
+        <!--  ALTRA CASELLA  -->
+        <TabItem
+            Width="260"
+            Height="60"
+            Margin="4"
+            Background="Gray"
+            FontSize="35"
+            FontWeight="UltraBold"
+            Header="Spaziatura">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Width="700"
+                    Height="50"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Maximum="20"
-                    Minimum="0"
-                    TickFrequency="1" />
+                    Background="Black"
+                    Content="SCEGLI LO SPAZIO TRA LINEE E PALLINI"
+                    Foreground="White" />
             </Grid>
         </TabItem>
 
 
+        <!--  ALTRA CASELLA  -->
         <TabItem
             Width="260"
             Height="60"
@@ -420,15 +615,7 @@
             Background="Gray"
             FontSize="35"
             FontWeight="UltraBold"
-            Header="Pallini" />
-        <TabItem
-            Width="260"
-            Height="60"
-            Margin="4"
-            Background="Gray"
-            FontSize="35"
-            FontWeight="UltraBold"
-            Header="Colori" />
+            Header="Riassunto" />
     </TabControl>
 
     <!--  Bottoni Sfondo  -->

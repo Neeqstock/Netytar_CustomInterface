@@ -24,16 +24,6 @@ namespace Netytar
             InitializeComponent();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            Style style = new Style { TargetType = typeof(Button) };
-
-            style.Setters.Add(new Setter(Border.BorderBrushProperty, Brushes.Red));
-            style.Setters.Add(new Setter(UIElement.VisibilityProperty, Visibility.Collapsed));
-
-            Application.Current.Resources["MyButtonStyle"] = style;
-        }
-
         private void btnPanwood_Click(object sender, RoutedEventArgs e)
         {
             rbtPanwood.IsChecked = true;
@@ -53,6 +43,41 @@ namespace Netytar
         private void btnDarkwood_Click(object sender, RoutedEventArgs e)
         {
             rbtDarkwood.IsChecked = true;
+        }
+
+        private void Btn_Secondo_Click(object sender, RoutedEventArgs e)
+        {
+            if (line.StrokeThickness < 17) 
+                {
+                    line.StrokeThickness += 1;
+                }
+        }
+
+        private void Btn_Primo_Click(object sender, RoutedEventArgs e)
+        {
+            if (line.StrokeThickness >= 3)
+            {
+                line.StrokeThickness -= 1;
+            }
+        }
+
+        private void Btn_Prim_One_Click(object sender, RoutedEventArgs e)
+        {
+            if (elli.Height >= 35)
+            {
+                elli.Height -= 2;
+                elli.Width -= 2;
+
+            }
+        }
+
+        private void Btn_Second_Two_Click(object sender, RoutedEventArgs e)
+        {
+            if (elli.Height < 55)
+            {
+                elli.Height += 2;
+                elli.Width += 2;
+            }
         }
     }
  }

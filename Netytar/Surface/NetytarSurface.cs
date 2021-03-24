@@ -111,7 +111,7 @@ namespace Netytar
             ellipseStrokeDim = dimensions.EllipseStrokeDim;
             ellipseStrokeSpacer = dimensions.EllipseStrokeSpacer;
             horizontalSpacer = dimensions.HorizontalSpacer;
-            lineThickness = dimensions.LineThickness;
+            lineThickness = dimensions. LineThickness;
             occluderOffset = dimensions.OccluderOffset;
             verticalSpacer = dimensions.VerticalSpacer;
 
