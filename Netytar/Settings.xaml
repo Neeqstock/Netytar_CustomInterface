@@ -188,7 +188,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
                     Background="Black"
-                    Content="Qui puoi scegliere l'immagine da utilizzare come sfondo da mettere sotto il programma "
+                    Content="Qui puoi scegliere l'immagine da utilizzare come sfondo da mettere al programma "
                     FontSize="25"
                     Foreground="White" />
                 <Grid Grid.Row="1">
@@ -416,13 +416,13 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
                     Background="Black"
-                    Content="Qui puoi scegliere la dimensione delle linee e dei pallini per il tuo programma, cioè lo spessore della linea  rossa che collega le due note&#xA;e lo spessore dei pallini che rappresentano le note suonate."
+                    Content="Scegli la dimensione delle linee e dei pallini per il tuo programma, lo spessore della linea rossa che collega le due note (MIN = 3, MAX = 25)&#xA; e lo spessore dei pallini che rappresentano le note suonate (MIN = 15, MAX = 50)"
                     FontSize="22"
                     Foreground="White" />
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
-                        <RowDefinition />
+                        <RowDefinition Height="250" />
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
@@ -490,15 +490,15 @@
                 </Grid>
 
                 <!--  PARTE SOTTO PALLINI  -->
-                <Grid Grid.Row="2" Margin="0,0,0,60">
+                <Grid Grid.Row="2" Margin="0,0,0,59">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
-                        <RowDefinition Height="220" />
+                        <RowDefinition Height="230" />
                     </Grid.RowDefinitions>
                     <Label
                         Grid.Row="0"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Top"
                         Background="Black"
                         Content="SCEGLI LO SPESSORE DEI PALLINI"
                         Foreground="White" />
@@ -561,17 +561,19 @@
                 </Grid>
                 <!--  LINEE SEPARATRICI  -->
                 <Line
-                    Grid.Row="1"
+                    Grid.Row="0"
                     Width="auto"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
                     Stretch="UniformToFill"
                     Stroke="SandyBrown"
                     StrokeThickness="5"
                     X1="1" />
                 <Line
-                    Grid.Row="0"
+                    Grid.Row="1"
                     Width="auto"
-                    VerticalAlignment="Bottom"
+                    Margin="0,290,0,0"
+                    HorizontalAlignment="Center"
                     Stretch="UniformToFill"
                     Stroke="SandyBrown"
                     StrokeThickness="5"
@@ -617,13 +619,6 @@
             FontWeight="UltraBold"
             Header="Riassunto" />
     </TabControl>
-
-    <!--  Bottoni Sfondo  -->
-
-    <!--  BOTTONI SELEZIONE  -->
-
-
-
 
 
 

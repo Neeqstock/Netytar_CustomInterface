@@ -16,7 +16,7 @@ namespace Netytar
     {
         AllLines,
         OnlyScaleLines,
-        NoLines
+        NoLines 
     }
 
     public enum NetytarSurfaceHighlightModes
@@ -111,7 +111,7 @@ namespace Netytar
             ellipseStrokeDim = dimensions.EllipseStrokeDim;
             ellipseStrokeSpacer = dimensions.EllipseStrokeSpacer;
             horizontalSpacer = dimensions.HorizontalSpacer;
-            lineThickness = dimensions. LineThickness;
+            lineThickness = dimensions.LineThickness;
             occluderOffset = dimensions.OccluderOffset;
             verticalSpacer = dimensions.VerticalSpacer;
 
@@ -140,10 +140,15 @@ namespace Netytar
             DrawEllipses(scale);
         }
 
+        /// <summary>
+        /// Logica di disegno dei pulsanti a schermo
+        /// </summary>
         public void DrawButtons()
         {
+            // Mi segno un po' di misure
             int halfSpacer = horizontalSpacer / 2;
             int spacer = horizontalSpacer;
+
             int firstSpacer = 0;
 
             bool isPairRow;
@@ -166,7 +171,7 @@ namespace Netytar
                     #region Draw the button on canvas
                     if (isPairRow)
                     {
-                        firstSpacer = horizontalSpacer / 2;
+                        firstSpacer = halfSpacer;
                     }
                     else
                     {
@@ -174,12 +179,16 @@ namespace Netytar
                     }
 
                     netytarButtons[row, col] = new NetytarButton(this);
+
+                    // Algoritmo che trova la posizione del pulsante
                     int X = startPositionX + firstSpacer + col * horizontalSpacer;
                     int Y = startPositionY + verticalSpacer * row;
+                    netytarButtons[row, col].Width = buttonWidth;
+                    netytarButtons[row, col].Height = buttonHeight;
                     Canvas.SetLeft(netytarButtons[row, col], X);
                     Canvas.SetTop(netytarButtons[row, col], Y);
 
-                    // OCCLUDER
+                    // Algoritmo che crea l'occluder e ne definisce le dimensioni
                     netytarButtons[row, col].Occluder.Width = buttonWidth + occluderOffset * 2;
                     netytarButtons[row, col].Occluder.Height = buttonHeight + occluderOffset * 2;
                     netytarButtons[row, col].Occluder.Fill = new SolidColorBrush(Color.FromArgb((byte)occluderAlpha, 0xFF, 0xFF, 0xFF));
@@ -187,13 +196,13 @@ namespace Netytar
                     Canvas.SetLeft(netytarButtons[row, col].Occluder, X - occluderOffset);
                     Canvas.SetTop(netytarButtons[row, col].Occluder, Y - occluderOffset);
 
+                    // Indica le posizioni sull'asse Z
                     Panel.SetZIndex(netytarButtons[row, col], 3);
                     Panel.SetZIndex(netytarButtons[row, col].Occluder, 2000);
+
+                    // Aggiunge gli oggetti al canvas di Netytar
                     canvas.Children.Add(netytarButtons[row, col]);
                     canvas.Children.Add(netytarButtons[row, col].Occluder);
-
-                    netytarButtons[row, col].Width = buttonWidth;
-                    netytarButtons[row, col].Height = buttonHeight;
                     #endregion
 
                     #region Define note
