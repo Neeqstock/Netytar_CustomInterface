@@ -98,7 +98,7 @@
     <Compile Include="Surface\Dimensions\DimensionInvert.cs" />
     <Compile Include="Surface\Dimensions\DimensionLaptop.cs" />
     <Compile Include="Surface\Dimensions\IDimension.cs" />
-    <Compile Include="Surface\IndependentLineFlashTimer.cs">
+    <Compile Include="Surface\LineFlasherTimer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Surface\LineFlashTimer.cs">

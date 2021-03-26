@@ -10,11 +10,8 @@ namespace Netytar
     {
         int VerticalSpacer { get; }
         int HorizontalSpacer { get; }
-        int ButtonHeight { get; }
-        int ButtonWidth { get; }
         int OccluderOffset { get; }
-        int EllipseStrokeDim { get; }
-        int EllipseStrokeSpacer { get; }
+        int EllipseRadius { get; }
         int LineThickness { get; }
         int HighlightStrokeDim { get; }
         int HighlightRadius { get; }

@@ -15,7 +15,7 @@ namespace Netytar
             Colors.Purple,
             Colors.Coral
         };
-        public SolidColorBrush NotInScaleBrush { get; } = new SolidColorBrush(Color.FromArgb(20, 0, 0, 0));
+        public SolidColorBrush NotInScaleBrush { get; } = new SolidColorBrush(Color.FromRgb(25, 25, 25));
         public SolidColorBrush MinorBrush { get; } = new SolidColorBrush(Colors.Blue);
         public SolidColorBrush MajorBrush { get; } = new SolidColorBrush(Colors.Red);
         public SolidColorBrush HighlightBrush { get; } = new SolidColorBrush(Colors.White);

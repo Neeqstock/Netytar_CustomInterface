@@ -16,7 +16,7 @@ namespace Netytar
     {
         AllLines,
         OnlyScaleLines,
-        NoLines 
+        NoLines
     }
 
     public enum NetytarSurfaceHighlightModes
@@ -27,24 +27,28 @@ namespace Netytar
 
     public class NetytarSurface
     {
-        private NetytarButton lastCheckedButton;
         private NetytarButton checkedButton;
         private Ellipse highlighter = new Ellipse();
-
-        private NetytarSurfaceDrawModes drawMode;
-        public NetytarSurfaceDrawModes DrawMode { get => drawMode; set => drawMode = value; }
-
+        private NetytarButton lastCheckedButton;
         private Scale scale = ScalesFactory.Cmaj;
+        public NetytarButton CheckedButton { get => checkedButton; }
+        public NetytarSurfaceDrawModes DrawMode { get; set; } = NetytarSurfaceDrawModes.OnlyScaleLines;
+        public NetytarSurfaceHighlightModes HighLightMode { get; set; }
+
         public Scale Scale
         {
             get { return scale; }
             set { scale = value; DrawScale(); }
         }
 
-        public NetytarButton CheckedButton { get => checkedButton; }
-        public NetytarSurfaceHighlightModes HighLightMode { get; set; }
-
         #region Settings
+
+        private int ellipseRadius;
+
+        private int generativePitch;
+
+        private int horizontalSpacer;
+
         private List<Color> keysColorCode = new List<Color>()
         {
             Colors.Red,
@@ -56,88 +60,66 @@ namespace Netytar
             Colors.Coral
         };
 
-        private SolidColorBrush notInScaleBrush;
-        private SolidColorBrush minorBrush;
+        private int lineThickness;
         private SolidColorBrush majorBrush;
-        private SolidColorBrush transparentBrush = new SolidColorBrush(Colors.Transparent);
-
-        private int generativePitch;
+        private SolidColorBrush minorBrush;
         private int nCols;
+        private SolidColorBrush notInScaleBrush;
         private int nRows;
+        private int occluderAlpha;
+        private int occluderOffset;
         private int startPositionX;
         private int startPositionY;
-        private int occluderAlpha;
-
+        private SolidColorBrush transparentBrush = new SolidColorBrush(Colors.Transparent);
         private int verticalSpacer;
-        private int horizontalSpacer;
-        private int buttonHeight;
-        private int buttonWidth;
-        private int occluderOffset;
-        private int ellipseStrokeDim;
-        private int ellipseStrokeSpacer;
-        private int lineThickness;
-        #endregion
+
+        #endregion Settings
 
         #region Surface components
+
         private Canvas canvas;
 
-        private NetytarButton[,] netytarButtons;
-        private List<Line> drawnLines = new List<Line>();
         private List<Ellipse> drawnEllipses = new List<Ellipse>();
-        #endregion
+        private List<Line> drawnLines = new List<Line>();
+        private NetytarButton[,] netytarButtons;
+
+        #endregion Surface components
 
         public NetytarSurface(Canvas canvas, IDimension dimensions, IColorCode colorCode, IButtonsSettings buttonsSettings, NetytarSurfaceDrawModes drawMode)
         {
             LoadSettings(dimensions, colorCode, buttonsSettings);
-            this.drawMode = drawMode;
+            this.DrawMode = drawMode;
 
             netytarButtons = new NetytarButton[nRows, nCols];
 
             this.canvas = canvas;
-            /*
-            canvas.VerticalAlignment = VerticalAlignment.Stretch;
-            canvas.HorizontalAlignment = HorizontalAlignment.Stretch;
-            canvas.Margin = new Thickness(0, 0, 0, 0);*/
+
             canvas.Width = startPositionX * 2 + (horizontalSpacer + 13) * (nCols - 1);
             canvas.Height = startPositionY * 2 + (verticalSpacer + 13) * (nRows - 1);
 
             canvas.Children.Add(highlighter);
         }
 
-        private void LoadSettings(IDimension dimensions, IColorCode colorCode, IButtonsSettings buttonsSettings)
+        public void ClearEllipses()
         {
-            buttonHeight = dimensions.ButtonHeight;
-            buttonWidth = dimensions.ButtonWidth;
-            ellipseStrokeDim = dimensions.EllipseStrokeDim;
-            ellipseStrokeSpacer = dimensions.EllipseStrokeSpacer;
-            horizontalSpacer = dimensions.HorizontalSpacer;
-            lineThickness = dimensions.LineThickness;
-            occluderOffset = dimensions.OccluderOffset;
-            verticalSpacer = dimensions.VerticalSpacer;
+            for (int i = 0; i < drawnEllipses.Count; i++)
+            {
+                Ellipse ellipse = drawnEllipses[i];
+                canvas.Children.Remove(ellipse);
+            }
 
-            keysColorCode = colorCode.KeysColorCode;
-
-            notInScaleBrush = colorCode.NotInScaleBrush;
-            majorBrush = colorCode.MajorBrush;
-            minorBrush = colorCode.MinorBrush;
-
-            generativePitch = buttonsSettings.GenerativeNote;
-            nCols = buttonsSettings.NCols;
-            nRows = buttonsSettings.NRows;
-            startPositionX = buttonsSettings.StartPositionX;
-            startPositionY = buttonsSettings.StartPositionY;
-            occluderAlpha = buttonsSettings.OccluderAlpha;
-
-            highlighter.Width = dimensions.HighlightRadius;
-            highlighter.Height = dimensions.HighlightRadius;
-            highlighter.StrokeThickness = dimensions.HighlightStrokeDim;
-            highlighter.Stroke = colorCode.HighlightBrush;
+            drawnEllipses = new List<Ellipse>();
         }
 
-        public void DrawScale()
+        public void ClearLines()
         {
-            DrawLines(scale);
-            DrawEllipses(scale);
+            for (int i = 0; i < drawnLines.Count; i++)
+            {
+                Line line = drawnLines[i];
+                canvas.Children.Remove(line);
+            }
+
+            drawnLines = new List<Line>();
         }
 
         /// <summary>
@@ -158,6 +140,7 @@ namespace Netytar
                 for (int col = 0; col < nCols; col++)
                 {
                     #region Is row pair?
+
                     if (row % 2 != 0)
                     {
                         isPairRow = false;
@@ -166,9 +149,11 @@ namespace Netytar
                     {
                         isPairRow = true;
                     }
-                    #endregion
+
+                    #endregion Is row pair?
 
                     #region Draw the button on canvas
+
                     if (isPairRow)
                     {
                         firstSpacer = halfSpacer;
@@ -183,14 +168,12 @@ namespace Netytar
                     // Algoritmo che trova la posizione del pulsante
                     int X = startPositionX + firstSpacer + col * horizontalSpacer;
                     int Y = startPositionY + verticalSpacer * row;
-                    netytarButtons[row, col].Width = buttonWidth;
-                    netytarButtons[row, col].Height = buttonHeight;
                     Canvas.SetLeft(netytarButtons[row, col], X);
                     Canvas.SetTop(netytarButtons[row, col], Y);
 
                     // Algoritmo che crea l'occluder e ne definisce le dimensioni
-                    netytarButtons[row, col].Occluder.Width = buttonWidth + occluderOffset * 2;
-                    netytarButtons[row, col].Occluder.Height = buttonHeight + occluderOffset * 2;
+                    netytarButtons[row, col].Occluder.Width = occluderOffset * 2;
+                    netytarButtons[row, col].Occluder.Height = occluderOffset * 2;
                     netytarButtons[row, col].Occluder.Fill = new SolidColorBrush(Color.FromArgb((byte)occluderAlpha, 0xFF, 0xFF, 0xFF));
                     netytarButtons[row, col].Occluder.Stroke = new SolidColorBrush(Color.FromArgb((byte)occluderAlpha, 0, 0, 0));
                     Canvas.SetLeft(netytarButtons[row, col].Occluder, X - occluderOffset);
@@ -203,9 +186,11 @@ namespace Netytar
                     // Aggiunge gli oggetti al canvas di Netytar
                     canvas.Children.Add(netytarButtons[row, col]);
                     canvas.Children.Add(netytarButtons[row, col].Occluder);
-                    #endregion
+
+                    #endregion Draw the button on canvas
 
                     #region Define note
+
                     int calcPitch = generativePitch;
                     calcPitch += col * 2 + row * 2;
                     if (isPairRow)
@@ -213,9 +198,123 @@ namespace Netytar
                         calcPitch += 1;
                     }
                     netytarButtons[row, col].Note = PitchUtils.PitchToMidiNote(calcPitch);
-                    #endregion
+
+                    #endregion Define note
                 }
             }
+        }
+
+        public void DrawEllipses(Scale scale)
+        {
+            if (netytarButtons != null)
+            {
+                ClearEllipses();
+
+                List<AbsNotes> scaleNotes = scale.NotesInScale;
+
+                for (int j = 0; j < nCols; j++)
+                {
+                    for (int k = 0; k < nCols; k++)
+                    {
+                        AbsNotes note = netytarButtons[j, k].Note.ToAbsNote();
+
+                        Ellipse ellipse = new Ellipse();
+
+                        ellipse.Width = ellipseRadius * 2;
+                        ellipse.Height = ellipseRadius * 2;
+
+                        Canvas.SetLeft(ellipse, Canvas.GetLeft(netytarButtons[j, k]) - ellipseRadius);
+                        Canvas.SetTop(ellipse, Canvas.GetTop(netytarButtons[j, k]) - ellipseRadius);
+                        Canvas.SetZIndex(ellipse, 2);
+
+                        if (!scaleNotes.Contains(note))
+                        {
+                            ellipse.Stroke = notInScaleBrush;
+                            ellipse.Fill = notInScaleBrush;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < scaleNotes.Count; i++)
+                            {
+                                if (note == scaleNotes[i])
+                                {
+                                    ellipse.Stroke = new SolidColorBrush(keysColorCode[i]);
+                                    ellipse.Fill = new SolidColorBrush(keysColorCode[i]);
+                                }
+                            }
+                        }
+
+                        drawnEllipses.Add(ellipse);
+                    }
+                }
+
+                foreach (Ellipse ellipse in drawnEllipses)
+                {
+                    canvas.Children.Add(ellipse);
+                }
+            }
+        }
+
+        public void DrawScale()
+        {
+            DrawLines(scale);
+            DrawEllipses(scale);
+        }
+
+        public void FlashMovementLine()
+        {
+            if (lastCheckedButton != null)
+            {
+                Point point1 = new Point(Canvas.GetLeft(CheckedButton), Canvas.GetTop(CheckedButton));
+                Point point2 = new Point(Canvas.GetLeft(lastCheckedButton), Canvas.GetTop(lastCheckedButton));
+                LineFlasherTimer timer = new LineFlasherTimer(point1, point2, canvas, Colors.NavajoWhite);
+            }
+        }
+
+        public void FlashSpark()
+        {
+            if (checkedButton != null)
+            {
+                Image image = new Image();
+                image.Height = 40;
+                image.Width = 40;
+                Canvas.SetLeft(image, Canvas.GetLeft(checkedButton) - 10);
+                Canvas.SetTop(image, Canvas.GetTop(checkedButton) - 15);
+                Canvas.SetZIndex(image, 100);
+                canvas.Children.Add(image);
+
+                BitmapImage bitImage = new BitmapImage();
+                bitImage.BeginInit();
+                bitImage.UriSource = new Uri("pack://application:,,,/Images/Sparks/Spark3.gif");
+                bitImage.EndInit();
+                ImageBehavior.SetAnimatedSource(image, bitImage);
+                ImageBehavior.SetRepeatBehavior(image, new RepeatBehavior(1));
+                ImageBehavior.AddAnimationCompletedHandler(image, disposeImage);
+            }
+        }
+
+        public void NetytarButton_OccluderMouseEnter(NetytarButton sender)
+        {
+            if (sender != CheckedButton)
+            {
+                Rack.DMIBox.SelectedNote = sender.Note;
+
+                lastCheckedButton = checkedButton;
+                checkedButton = sender;
+
+                FlashMovementLine();
+                // FlashSpark();
+
+                if (HighLightMode == NetytarSurfaceHighlightModes.CurrentNote)
+                {
+                    MoveHighlighter(CheckedButton);
+                }
+            }
+        }
+
+        private void disposeImage(object sender, RoutedEventArgs e)
+        {
+            canvas.Children.Remove(((Image)sender));
         }
 
         private void DrawLines(Scale scale)
@@ -223,23 +322,28 @@ namespace Netytar
             if (netytarButtons != null)
             {
                 ClearLines();
-                if (drawMode != NetytarSurfaceDrawModes.NoLines)
+                if (DrawMode != NetytarSurfaceDrawModes.NoLines)
                 {
                     Brush inScaleBrush = new SolidColorBrush();
+
                     #region Determine inScale brush
+
                     switch (scale.ScaleCode)
                     {
                         case ScaleCodes.maj:
                             inScaleBrush = majorBrush;
                             break;
+
                         case ScaleCodes.min:
                             inScaleBrush = minorBrush;
                             break;
+
                         default:
                             inScaleBrush = majorBrush;
                             break;
                     }
-                    #endregion
+
+                    #endregion Determine inScale brush
 
                     bool isPairRow;
 
@@ -250,8 +354,8 @@ namespace Netytar
                     {
                         for (int col = 0; col < nCols; col++)
                         {
-
                             #region Is row pair?
+
                             if (row % 2 != 0)
                             {
                                 isPairRow = false;
@@ -260,9 +364,11 @@ namespace Netytar
                             {
                                 isPairRow = true;
                             }
-                            #endregion
+
+                            #endregion Is row pair?
 
                             #region Draw horizontal lines
+
                             if (col != 0)
                             {
                                 Brush brush;
@@ -272,7 +378,7 @@ namespace Netytar
                                 }
                                 else
                                 {
-                                    if (drawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                    if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
                                     {
                                         brush = transparentBrush;
                                     }
@@ -281,10 +387,9 @@ namespace Netytar
                                         brush = notInScaleBrush;
                                     }
                                 }
-                                realCenter1 = new Point(Canvas.GetLeft(netytarButtons[row, col]) + 0, Canvas.GetTop(netytarButtons[row, col]) + 6);
-                                realCenter2 = new Point(Canvas.GetLeft(netytarButtons[row, col - 1]) + 13, Canvas.GetTop(netytarButtons[row, col - 1]) + 6);
+                                realCenter1 = new Point(Canvas.GetLeft(netytarButtons[row, col]), Canvas.GetTop(netytarButtons[row, col]));
+                                realCenter2 = new Point(Canvas.GetLeft(netytarButtons[row, col - 1]), Canvas.GetTop(netytarButtons[row, col - 1]));
                                 Line myLine = new Line();
-
 
                                 myLine.Stroke = brush;
                                 myLine.X1 = realCenter1.X;
@@ -299,9 +404,9 @@ namespace Netytar
 
                                 netytarButtons[row, col - 1].L_p2 = myLine;
                                 netytarButtons[row, col].L_m2 = myLine;
-
                             }
-                            #endregion
+
+                            #endregion Draw horizontal lines
 
                             #region Draw diagonal lines
 
@@ -315,9 +420,9 @@ namespace Netytar
                                 }
                                 else
                                 {
-                                    if (drawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                    if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
                                     {
-                                        brush = transparentBrush; 
+                                        brush = transparentBrush;
                                     }
                                     else
                                     {
@@ -335,7 +440,6 @@ namespace Netytar
                                     realCenter1 = new Point(Canvas.GetLeft(netytarButtons[row, col]) + 11, Canvas.GetTop(netytarButtons[row, col]) + 2);
                                     realCenter2 = new Point(Canvas.GetLeft(netytarButtons[row - 1, col]) + 2, Canvas.GetTop(netytarButtons[row - 1, col]) + 11);
                                 }
-
 
                                 Line myLine = new Line();
 
@@ -365,7 +469,6 @@ namespace Netytar
 
                                 if (isPairRow)
                                 {
-
                                     if (col < nCols - 1)
                                     {
                                         if (scale.AreConsequent(netytarButtons[row, col].Note, netytarButtons[row - 1, col + 1].Note))
@@ -374,7 +477,7 @@ namespace Netytar
                                         }
                                         else
                                         {
-                                            if (drawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                            if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
                                             {
                                                 brush = transparentBrush;
                                             }
@@ -387,7 +490,6 @@ namespace Netytar
                                         realCenter2 = new Point(Canvas.GetLeft(netytarButtons[row - 1, col + 1]) + 2, Canvas.GetTop(netytarButtons[row - 1, col + 1]) + 11);
 
                                         Line diaLine = new Line();
-
 
                                         diaLine.Stroke = brush;
                                         diaLine.X1 = realCenter1.X;
@@ -411,11 +513,10 @@ namespace Netytar
                                         if (scale.AreConsequent(netytarButtons[row, col].Note, netytarButtons[row - 1, col - 1].Note))
                                         {
                                             brush = inScaleBrush;
-
                                         }
                                         else
                                         {
-                                            if (drawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                            if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
                                             {
                                                 brush = transparentBrush;
                                             }
@@ -444,145 +545,51 @@ namespace Netytar
                                         netytarButtons[row, col].L_m3 = diaLine;
                                     }
                                 }
-
                             }
-                            #endregion
 
+                            #endregion Draw diagonal lines
                         }
                     }
 
                     foreach (Line line in drawnLines)
                     {
-                            canvas.Children.Add(line);
+                        canvas.Children.Add(line);
                     }
                 }
-
-            
             }
         }
 
-        public void ClearLines()
+        private void LoadSettings(IDimension dimensions, IColorCode colorCode, IButtonsSettings buttonsSettings)
         {
-            for (int i = 0; i < drawnLines.Count; i++)
-            {
-                Line line = drawnLines[i];
-                canvas.Children.Remove(line);
-            }
+            ellipseRadius = dimensions.EllipseRadius;
+            horizontalSpacer = dimensions.HorizontalSpacer;
+            lineThickness = dimensions.LineThickness;
+            occluderOffset = dimensions.OccluderOffset;
+            verticalSpacer = dimensions.VerticalSpacer;
 
-            drawnLines = new List<Line>();
-        }
-        
-        public void ClearEllipses()
-        {
-            for (int i = 0; i < drawnEllipses.Count; i++)
-            {
-                Ellipse ellipse = drawnEllipses[i];
-                canvas.Children.Remove(ellipse);
-            }
+            keysColorCode = colorCode.KeysColorCode;
 
-            drawnEllipses = new List<Ellipse>();
-        }
-    
-        public void DrawEllipses(Scale scale)
-        {
-            if(netytarButtons != null)
-            {
-                ClearEllipses();
+            notInScaleBrush = colorCode.NotInScaleBrush;
+            majorBrush = colorCode.MajorBrush;
+            minorBrush = colorCode.MinorBrush;
 
-                List<AbsNotes> scaleNotes = scale.NotesInScale;
+            generativePitch = buttonsSettings.GenerativeNote;
+            nCols = buttonsSettings.NCols;
+            nRows = buttonsSettings.NRows;
+            startPositionX = buttonsSettings.StartPositionX;
+            startPositionY = buttonsSettings.StartPositionY;
+            occluderAlpha = buttonsSettings.OccluderAlpha;
 
-                for (int j = 0; j < nCols; j++)
-                {
-                    for (int k = 0; k < nCols; k++)
-                    {
-                        for (int i = 0; i < scaleNotes.Count; i++)
-                        {
-                            AbsNotes note = netytarButtons[j, k].Note.ToAbsNote();
-                            if (note == scaleNotes[i])
-                            {
-                                Ellipse ellipse = new Ellipse();
-                                ellipse.StrokeThickness = ellipseStrokeDim;
-                                ellipse.Stroke = new SolidColorBrush(keysColorCode[i]);
-                                ellipse.Width = netytarButtons[j, k].Width + ellipseStrokeSpacer * 2;
-                                ellipse.Height = netytarButtons[j, k].Height + ellipseStrokeSpacer * 2;
-                                Canvas.SetLeft(ellipse, Canvas.GetLeft(netytarButtons[j, k]) - ellipseStrokeSpacer + 0.4);
-                                Canvas.SetTop(ellipse, Canvas.GetTop(netytarButtons[j, k]) - ellipseStrokeSpacer + 0.2);
-                                Canvas.SetZIndex(ellipse, 2);
-                                drawnEllipses.Add(ellipse);
-                            }
-                        }
-                    }
-                }
-
-                foreach (Ellipse ellipse in drawnEllipses)
-                {
-                        canvas.Children.Add(ellipse);
-                }
-            }
-        }
-
-        public void NetytarButton_OccluderMouseEnter(NetytarButton sender)
-        {
-            if(sender != CheckedButton)
-            {
-                Rack.DMIBox.SelectedNote = sender.Note;
-
-                lastCheckedButton = checkedButton;
-                checkedButton = sender;
-
-                FlashMovementLine();
-                // FlashSpark();
-
-                if(HighLightMode == NetytarSurfaceHighlightModes.CurrentNote)
-                {
-                    MoveHighlighter(CheckedButton);
-                }
-            }
+            highlighter.Width = dimensions.HighlightRadius;
+            highlighter.Height = dimensions.HighlightRadius;
+            highlighter.StrokeThickness = dimensions.HighlightStrokeDim;
+            highlighter.Stroke = colorCode.HighlightBrush;
         }
 
         private void MoveHighlighter(NetytarButton checkedButton)
         {
-            Canvas.SetLeft(highlighter, Canvas.GetLeft(checkedButton) - highlighter.ActualWidth / 2.5) ;
-            Canvas.SetTop(highlighter, Canvas.GetTop(checkedButton) - highlighter.ActualHeight / 2.5);
-        }
-
-        public void FlashMovementLine()
-        {
-            if(lastCheckedButton != null)
-            {
-                Point point1 = new Point(Canvas.GetLeft(CheckedButton) + 6, Canvas.GetTop(CheckedButton) + 6);
-                Point point2 = new Point(Canvas.GetLeft(lastCheckedButton) + 6, Canvas.GetTop(lastCheckedButton) + 6);
-                IndependentLineFlashTimer timer = new IndependentLineFlashTimer(point1, point2, canvas, Colors.NavajoWhite);
-            }
-            
-        }
-
-        public void FlashSpark()
-        {
-            if (checkedButton != null)
-            {
-                Image image = new Image();
-                image.Height = 40;
-                image.Width = 40;
-                Canvas.SetLeft(image, Canvas.GetLeft(checkedButton) - 10);
-                Canvas.SetTop(image, Canvas.GetTop(checkedButton) - 15);
-                Canvas.SetZIndex(image, 100);
-                canvas.Children.Add(image);
-
-                BitmapImage bitImage = new BitmapImage();
-                bitImage.BeginInit();
-                bitImage.UriSource = new Uri("pack://application:,,,/Images/Sparks/Spark3.gif");
-                bitImage.EndInit();
-                ImageBehavior.SetAnimatedSource(image, bitImage);
-                ImageBehavior.SetRepeatBehavior(image, new RepeatBehavior(1));
-                ImageBehavior.AddAnimationCompletedHandler(image, disposeImage);
-            }
-            
-        }
-
-        private void disposeImage(object sender, RoutedEventArgs e)
-        {
-            canvas.Children.Remove(((Image)sender));
+            Canvas.SetLeft(highlighter, Canvas.GetLeft(checkedButton) - highlighter.ActualWidth / 2);
+            Canvas.SetTop(highlighter, Canvas.GetTop(checkedButton) - highlighter.ActualHeight / 2);
         }
     }
 }

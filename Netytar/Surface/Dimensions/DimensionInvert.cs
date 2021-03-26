@@ -12,11 +12,8 @@ namespace Netytar
         public int HighlightRadius { get; } = 65;
         public int VerticalSpacer { get; } = -70;
         public int HorizontalSpacer { get; } = 170;
-        public int ButtonHeight { get; } = 13;
-        public int ButtonWidth { get; } = 13;
-        public int OccluderOffset { get; } = 28;
-        public int EllipseStrokeDim { get; } = 15;
-        public int EllipseStrokeSpacer { get; } = 15;
+        public int OccluderOffset { get; } = 35;
+        public int EllipseRadius { get; } = 23;
         public int LineThickness { get; } = 3;
     }
 }

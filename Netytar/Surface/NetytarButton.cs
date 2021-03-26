@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace Netytar
 {
-    public class NetytarButton : RadioButton
+    public class NetytarButton : Button
     {
         #region Internal params
         private MidiNotes note;
@@ -127,6 +127,10 @@ namespace Netytar
             occluder.VerticalAlignment = VerticalAlignment.Center;
 
             occluder.MouseEnter += OccluderMouseEnterBehavior;
+            this.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+            this.BorderThickness = new Thickness(0);
+            Width = 1;
+            Height = 1;
         }
 
         public Line getLine(int pitchDirection)

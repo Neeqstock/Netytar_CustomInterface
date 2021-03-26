@@ -71,7 +71,7 @@ namespace Netytar.DMIbox
             IDimension dimension = new DimensionInvert();
             IColorCode colorCode = new ColorCodeStandard();
             IButtonsSettings buttonsSettings = new ButtonsSettingsInvert();
-            NetytarSurfaceDrawModes drawMode = NetytarSurfaceDrawModes.AllLines;
+            NetytarSurfaceDrawModes drawMode = NetytarSurfaceDrawModes.OnlyScaleLines;
 
             Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.NetytarMainWindow.scrlNetytar, 0, 100, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
             Rack.DMIBox.NetytarSurface = new NetytarSurface(Rack.DMIBox.NetytarMainWindow.canvasNetytar, dimension, colorCode, buttonsSettings, drawMode);
