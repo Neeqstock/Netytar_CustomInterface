@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Netytar"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Settings"
+    Title="IMPOSTAZIONI"
     Width="1200"
     Height="800"
     Background="Black"
@@ -161,6 +161,11 @@
             <BeginStoryboard Storyboard="{StaticResource OnClick3}" />
         </EventTrigger>
     </Window.Triggers>
+
+
+
+
+
 
     <!--  SCHEDE  -->
     <TabControl
@@ -416,7 +421,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Stretch"
                     Background="Black"
-                    Content="Scegli la dimensione delle linee e dei pallini per il tuo programma, lo spessore della linea rossa che collega le due note (MIN = 3, MAX = 25)&#xA; e lo spessore dei pallini che rappresentano le note suonate (MIN = 15, MAX = 50)"
+                    Content="Scegli la dimensione delle linee e dei pallini per il tuo programma, lo spessore della linea rossa che collega le due note&#xA; e lo spessore dei pallini che rappresentano le note suonate"
                     FontSize="22"
                     Foreground="White" />
                 <Grid Grid.Row="1">
@@ -450,7 +455,8 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="White"
-                                Click="Btn_Primo_Click">
+                                Click="Btn_Primo_Click"
+                                Style="{DynamicResource MyButtonStyle}">
                                 <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
                             </Button>
                             <Button
@@ -462,7 +468,8 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="White"
-                                Click="Btn_Secondo_Click">
+                                Click="Btn_Secondo_Click"
+                                Style="{DynamicResource MyButtonStyle}">
                                 <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
                             </Button>
                         </Grid>
@@ -470,7 +477,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Width="500"
-                            Height="120"
+                            Height="170"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Stretch"
                             BorderBrush="SandyBrown"
@@ -521,7 +528,8 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="White"
-                                Click="Btn_Prim_One_Click">
+                                Click="Btn_Prim_One_Click"
+                                Style="{DynamicResource MyButtonStyle}">
                                 <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
                             </Button>
                             <Button
@@ -533,7 +541,8 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="White"
-                                Click="Btn_Second_Two_Click">
+                                Click="Btn_Second_Two_Click"
+                                Style="{DynamicResource MyButtonStyle}">
                                 <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
                             </Button>
                         </Grid>
@@ -541,22 +550,29 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Width="500"
-                            Height="120"
+                            Height="170"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             BorderBrush="SandyBrown"
-                            BorderThickness="6">
-                            <Ellipse
-                                x:Name="elli"
-                                Width="35"
-                                Height="35"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Fill="Black"
-                                Stroke="Blue"
-                                StrokeThickness="10" />
-                        </Border>
+                            BorderThickness="6" />
+                        <Border
+                            x:Name="bordi"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="70"
+                            Height="70"
+                            Background="SlateGray"
+                            Opacity="0.1" />
+                        <Ellipse
+                            x:Name="elli"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="46"
+                            Height="46"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Fill="Blue"
+                            StrokeThickness="0" />
                     </Grid>
                 </Grid>
                 <!--  LINEE SEPARATRICI  -->
@@ -583,7 +599,7 @@
 
         <!--  ALTRA CASELLA  -->
         <TabItem
-            Width="260"
+            Width="250"
             Height="60"
             Margin="4"
             Background="Gray"
@@ -592,33 +608,301 @@
             Header="Spaziatura">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
-                    <RowDefinition />
+                    <RowDefinition Height="55" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Label
                     Grid.Row="0"
-                    Width="700"
+                    Width="auto"
                     Height="50"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    Background="Black"
+                    Content="Scegli la dimensione dello spazio orizzontale e verticale tra una nota e l'altra.  "
+                    FontSize="22"
+                    Foreground="White" />
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.Column="1"
+                        Width="480"
+                        Height="482"
+                        Margin="57,40,50.2,114"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        BorderBrush="SaddleBrown"
+                        BorderThickness="5"
+                        CornerRadius="9">
+                        <Canvas
+                            Grid.Column="1"
+                            Width="480"
+                            Height="504"
+                            Margin="-9.8,-27.8,0.2,-4.2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Ellipse
+                                Canvas.Left="38"
+                                Canvas.Top="67"
+                                Width="129"
+                                Height="124"
+                                Fill="Blue"
+                                Stroke="Black" />
+                            <Ellipse
+                                Canvas.Left="328"
+                                Canvas.Top="67"
+                                Width="129"
+                                Height="124"
+                                Fill="Red"
+                                Stroke="Black" />
+                            <Ellipse
+                                Canvas.Left="38"
+                                Canvas.Top="352.4"
+                                Width="129"
+                                Height="124"
+                                Fill="Yellow"
+                                Stroke="Black" />
+                            <Ellipse
+                                Canvas.Left="328"
+                                Canvas.Top="352.4"
+                                Width="129"
+                                Height="124"
+                                Fill="Green"
+                                Stroke="Black" />
+                            <Line
+                                x:Name="line_canvas"
+                                Canvas.Left="227.31"
+                                Canvas.Top="135"
+                                Width="25"
+                                Height="288"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stretch="UniformToFill"
+                                Stroke="Red"
+                                StrokeThickness="6"
+                                Y1="1">
+                                <Line.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="-45.786" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Line.RenderTransform>
+                            </Line>
+                            <Line
+                                x:Name="line_canvas2"
+                                Canvas.Left="164"
+                                Canvas.Top="120"
+                                Width="167"
+                                Height="28"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stretch="UniformToFill"
+                                Stroke="Red"
+                                StrokeThickness="6"
+                                X1="1" />
+                            <Line
+                                x:Name="line_canvas3"
+                                Canvas.Left="163"
+                                Canvas.Top="410"
+                                Width="169"
+                                Height="28"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stretch="UniformToFill"
+                                Stroke="Red"
+                                StrokeThickness="6"
+                                X1="1" />
+                        </Canvas>
+                    </Border>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Height="50"
+                            VerticalAlignment="Top"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Orizzontale"
+                            FontSize="30"
+                            FontWeight="ExtraBold"
+                            Foreground="White" />
+                        <Button
+                            x:Name="Btn_Second_"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Width="170"
+                            Height="100"
+                            Margin="0,0,50,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Style="{DynamicResource MyButtonStyle}">
+                            <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
+                        </Button>
+                        <Button
+                            x:Name="Btn_Prim_"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Width="170"
+                            Height="100"
+                            Margin="50,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Style="{DynamicResource MyButtonStyle}">
+                            <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
+                        </Button>
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,0,270"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Content="Verticale"
+                            FontSize="30"
+                            FontWeight="ExtraBold"
+                            Foreground="White" />
+                        <Button
+                            x:Name="Btn_Seconde"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="170"
+                            Height="100"
+                            Margin="0,0,50,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Style="{DynamicResource MyButtonStyle}">
+                            <Image Source="Images\Icons\Piu.png" Stretch="Fill" />
+                        </Button>
+                        <Button
+                            x:Name="Btn_Prime"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="170"
+                            Height="100"
+                            Margin="50,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="White"
+                            Style="{DynamicResource MyButtonStyle}">
+                            <Image Source="Images\Icons\min.jpg " Stretch="Fill" />
+                        </Button>
+                        <Line
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Width="auto"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Stretch="UniformToFill"
+                            Stroke="SandyBrown"
+                            StrokeThickness="5"
+                            X1="1" />
+                    </Grid>
+                </Grid>
+                <Line
+                    Grid.Row="1"
+                    Width="auto"
+                    Height="auto"
+                    Margin="0,0,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="Black"
-                    Content="SCEGLI LO SPAZIO TRA LINEE E PALLINI"
-                    Foreground="White" />
+                    Stretch="UniformToFill"
+                    Stroke="SandyBrown"
+                    StrokeThickness="5"
+                    Y1="1" />
+                <!--  LINEE SEPARATRICI  -->
+                <Line
+                    Grid.Row="0"
+                    Width="auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Stretch="UniformToFill"
+                    Stroke="SandyBrown"
+                    StrokeThickness="5"
+                    X1="1" />
+
             </Grid>
         </TabItem>
 
-
         <!--  ALTRA CASELLA  -->
         <TabItem
-            Width="260"
-            Height="60"
-            Margin="4"
+            Width="270"
+            Height="50"
+            Margin="4,2,0,3"
             Background="Gray"
             FontSize="35"
             FontWeight="UltraBold"
-            Header="Riassunto" />
+            Header="Salva/Esci">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="180" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="90" />
+                </Grid.RowDefinitions>
+                <Label
+                    Grid.Row="0"
+                    HorizontalContentAlignment="Center"
+                    Background="Black"
+                    Content="HAI SELEZIONATO LO SFONDO NUMERO:"
+                    FontSize="30"
+                    Foreground="White" />
+                <Label
+                    Grid.Row="1"
+                    HorizontalContentAlignment="Center"
+                    Background="Black"
+                    Content="HAI SELEZIONATO COME DIMENSIONE DEI PALLINI E DELLE LINEE:"
+                    FontSize="30"
+                    Foreground="White" />
+                <Label
+                    Grid.Row="2"
+                    HorizontalContentAlignment="Center"
+                    Background="Black"
+                    Content="HAI SELEZIONATO LO SPAZIO VERTICALE E ORIZZONTALE:"
+                    FontSize="30"
+                    Foreground="White" />
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Width="200"
+                        Height="70"
+                        Background="Black"
+                        BorderBrush="White"
+                        BorderThickness="3"
+                        Click="Btn_Salva"
+                        Content="SALVA"
+                        Foreground="White"
+                        Style="{DynamicResource MyButtonStyle}" />
+                    <Button
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="200"
+                        Height="70"
+                        Background="Black"
+                        BorderBrush="White"
+                        BorderThickness="3"
+                        Click="Btn_Esci"
+                        Content="ESCI"
+                        Foreground="White"
+                        Style="{DynamicResource MyButtonStyle}" />
+                </Grid>
+            </Grid>
+        </TabItem>
     </TabControl>
+
+
 
 
 

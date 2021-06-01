@@ -85,19 +85,15 @@ namespace Netytar
 
         #endregion Surface components
 
-        public NetytarSurface(Canvas canvas, IDimension dimensions, IColorCode colorCode, IButtonsSettings buttonsSettings, NetytarSurfaceDrawModes drawMode)
+        public NetytarSurface(Canvas canvas, NetytarSurfaceDrawModes drawMode)
         {
-            LoadSettings(dimensions, colorCode, buttonsSettings);
+            LoadSettings();
             this.DrawMode = drawMode;
-
-            netytarButtons = new NetytarButton[nRows, nCols];
 
             this.canvas = canvas;
 
             canvas.Width = startPositionX * 2 + (horizontalSpacer + 13) * (nCols - 1);
             canvas.Height = startPositionY * 2 + (verticalSpacer + 13) * (nRows - 1);
-
-            canvas.Children.Add(highlighter);
         }
 
         public void ClearEllipses()
@@ -127,6 +123,15 @@ namespace Netytar
         /// </summary>
         public void DrawButtons()
         {
+            ClearButtons();
+            LoadSettings();
+
+            if (canvas.Children.Contains(highlighter))
+            {
+                canvas.Children.Remove(highlighter);
+            }
+            canvas.Children.Add(highlighter);
+
             // Mi segno un po' di misure
             int halfSpacer = horizontalSpacer / 2;
             int spacer = horizontalSpacer;
@@ -189,6 +194,8 @@ namespace Netytar
 
                     #endregion Draw the button on canvas
 
+                    // ===========================================================================
+
                     #region Define note
 
                     int calcPitch = generativePitch;
@@ -202,6 +209,21 @@ namespace Netytar
                     #endregion Define note
                 }
             }
+        }
+
+        private void ClearButtons()
+        {
+            if(netytarButtons != null)
+            {
+                foreach (NetytarButton button in netytarButtons)
+                {
+                    canvas.Children.Remove(button);
+                    canvas.Children.Remove(button.Occluder);
+                }
+
+                netytarButtons = new NetytarButton[nRows, nCols];
+            }
+            netytarButtons = new NetytarButton[nRows, nCols];
         }
 
         public void DrawEllipses(Scale scale)
@@ -354,7 +376,7 @@ namespace Netytar
                     {
                         for (int col = 0; col < nCols; col++)
                         {
-                            #region Is row pair?
+ #region Is row pair?
 
                             if (row % 2 != 0)
                             {
@@ -559,31 +581,32 @@ namespace Netytar
             }
         }
 
-        private void LoadSettings(IDimension dimensions, IColorCode colorCode, IButtonsSettings buttonsSettings)
+        public void LoadSettings()
         {
-            ellipseRadius = dimensions.EllipseRadius;
-            horizontalSpacer = dimensions.HorizontalSpacer;
-            lineThickness = dimensions.LineThickness;
-            occluderOffset = dimensions.OccluderOffset;
-            verticalSpacer = dimensions.VerticalSpacer;
+            ellipseRadius = Rack.UserSettings.EllipseRadius;
+            horizontalSpacer = Rack.UserSettings.HorizontalSpacer;
+            lineThickness = Rack.UserSettings.LineThickness;
+            occluderOffset = Rack.UserSettings.OccluderOffset;
+            verticalSpacer = Rack.UserSettings.VerticalSpacer;
 
-            keysColorCode = colorCode.KeysColorCode;
+            keysColorCode = Rack.ColorCode.KeysColorCode;
+            notInScaleBrush = Rack.ColorCode.NotInScaleBrush;
+            majorBrush = Rack.ColorCode.MajorBrush;
+            minorBrush = Rack.ColorCode.MinorBrush;
 
-            notInScaleBrush = colorCode.NotInScaleBrush;
-            majorBrush = colorCode.MajorBrush;
-            minorBrush = colorCode.MinorBrush;
+            generativePitch = Rack.ButtonsSettings.GenerativeNote;
+            nCols = Rack.ButtonsSettings.NCols;
+            nRows = Rack.ButtonsSettings.NRows;
+            startPositionX = Rack.ButtonsSettings.StartPositionX;
+            startPositionY = Rack.ButtonsSettings.StartPositionY;
+            occluderAlpha = Rack.ButtonsSettings.OccluderAlpha;
 
-            generativePitch = buttonsSettings.GenerativeNote;
-            nCols = buttonsSettings.NCols;
-            nRows = buttonsSettings.NRows;
-            startPositionX = buttonsSettings.StartPositionX;
-            startPositionY = buttonsSettings.StartPositionY;
-            occluderAlpha = buttonsSettings.OccluderAlpha;
+            highlighter.Width = Rack.UserSettings.HighlightRadius;
+            highlighter.Height = Rack.UserSettings.HighlightRadius;
+            highlighter.StrokeThickness = Rack.UserSettings.HighlightStrokeDim;
+            highlighter.Stroke = Rack.ColorCode.HighlightBrush;
 
-            highlighter.Width = dimensions.HighlightRadius;
-            highlighter.Height = dimensions.HighlightRadius;
-            highlighter.StrokeThickness = dimensions.HighlightStrokeDim;
-            highlighter.Stroke = colorCode.HighlightBrush;
+            //canvas.Background =
         }
 
         private void MoveHighlighter(NetytarButton checkedButton)

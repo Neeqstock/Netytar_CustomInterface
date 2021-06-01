@@ -4,5 +4,10 @@
     {
         private static NetytarDMIBox dmibox = new NetytarDMIBox();
         public static NetytarDMIBox DMIBox { get => dmibox; set => dmibox = value; }
+
+        public static IUserSettings UserSettings { get; set; } = new DefaultUserSettings();
+        public static IColorCode ColorCode { get; set; } = new DefaultColorCode();
+        public static IButtonsSettings ButtonsSettings { get; set; } = new DefaultButtonSettings();
+        public static NetytarSurfaceDrawModes DrawMode { get; set; } = NetytarSurfaceDrawModes.OnlyScaleLines;
     }
 }

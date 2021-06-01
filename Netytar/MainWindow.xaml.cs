@@ -1,4 +1,6 @@
-﻿using NeeqDMIs.ATmega;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using NeeqDMIs.ATmega;
 using NeeqDMIs.Music;
 using Netytar.DMIbox;
 using System;
@@ -17,6 +19,9 @@ namespace Netytar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+
         private int breathSensorValue = 0;
         public int BreathSensorValue { get => breathSensorValue; set => breathSensorValue = value; }
 
@@ -386,13 +391,10 @@ namespace Netytar
             }
         }
 
-
-
         private void btnExit_Activate(object sender, RoutedEventArgs e)
         {
 
         }
-
         
         private void btnCalibrateHeadPose_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -413,8 +415,7 @@ namespace Netytar
 
             }
         }
-
-        
+  
         private void btnCalibrateHeadPose_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             btnCalibrateHeadPose.Background = new SolidColorBrush(Colors.Black);
@@ -475,5 +476,39 @@ namespace Netytar
                 UpdateIndicators();
             }
         }
+
+        private void lblSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Settings win = new Settings();
+            win.ShowDialog();
+        }
+
+        private void Button_Play(object sender, RoutedEventArgs e)
+        {
+            if (outputDevice == null)
+            {
+                outputDevice = new WaveOutEvent();
+                outputDevice.PlaybackStopped += OnPlaybackStopped;
+            }
+            if (audioFile == null)
+            {
+                audioFile = new AudioFileReader(@"C:\Users\Entica\Documents\GitHub\Netytar_CustomInterface\Netytar_CustomInterface\Netytar\Audio\80.mp3");
+                outputDevice.Init(audioFile);
+            }
+            outputDevice.Play();
+        }
+
+        private void Button_Stop(object sender, RoutedEventArgs e)
+        {
+            outputDevice?.Stop();
+        }
+        private void OnPlaybackStopped(object sender, StoppedEventArgs args)
+        {
+            outputDevice.Dispose();
+            outputDevice = null;
+            audioFile.Dispose();
+            audioFile = null;
+        }
+
     }
 }

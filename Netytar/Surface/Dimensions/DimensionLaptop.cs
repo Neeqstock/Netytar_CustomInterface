@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Netytar
 {
-    class DimensionLaptop : IDimension
+    class DimensionLaptop : IUserSettings
     {
         public int HighlightStrokeDim { get; } = 5;
         public int HighlightRadius { get; } = 65;

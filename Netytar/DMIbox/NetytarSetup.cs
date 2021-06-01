@@ -67,14 +67,9 @@ namespace Netytar.DMIbox
             Rack.DMIBox.SensorReader.Behaviors.Add(new SBreadSerial());
 
 
-            // SURFACE
-            IDimension dimension = new DimensionInvert();
-            IColorCode colorCode = new ColorCodeStandard();
-            IButtonsSettings buttonsSettings = new ButtonsSettingsInvert();
-            NetytarSurfaceDrawModes drawMode = NetytarSurfaceDrawModes.OnlyScaleLines;
-
+            // SURFACE INIT
             Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.NetytarMainWindow.scrlNetytar, 0, 100, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
-            Rack.DMIBox.NetytarSurface = new NetytarSurface(Rack.DMIBox.NetytarMainWindow.canvasNetytar, dimension, colorCode, buttonsSettings, drawMode);
+            Rack.DMIBox.NetytarSurface = new NetytarSurface(Rack.DMIBox.NetytarMainWindow.canvasNetytar, Rack.DrawMode);
             Rack.DMIBox.NetytarSurface.DrawButtons();
             Rack.DMIBox.NetytarSurface.Scale = ScalesFactory.Cmaj;
         }
