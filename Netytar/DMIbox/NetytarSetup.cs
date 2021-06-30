@@ -37,7 +37,6 @@ namespace Netytar.DMIbox
             if(Rack.DMIBox.Eyetracker == Eyetracker.Tobii)
             {
                 Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
-                Rack.DMIBox.TobiiModule.Start();
                 Rack.DMIBox.TobiiModule.HeadPoseBehaviors.Add(new HPBpitchPlay(10, 15, 1.5f, 30f));
                 Rack.DMIBox.TobiiModule.HeadPoseBehaviors.Add(new HPBvelocityPlay(8, 12, 2f, 120f, 0.2f));
             }
@@ -52,7 +51,7 @@ namespace Netytar.DMIbox
 
 
             // MISCELLANEOUS
-            Rack.DMIBox.SensorReader = new SensorModule("COM", 9600);
+            Rack.DMIBox.SensorReader = new SensorModule(9600);
 
             // BEHAVIORS
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBemulateMouse());

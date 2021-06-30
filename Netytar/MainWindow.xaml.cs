@@ -229,7 +229,7 @@ namespace Netytar
         private void InitializeSensorPortText()
         {
             txtSensorPort.Foreground = WarningBrush;
-            txtSensorPort.Text = Rack.DMIBox.SensorReader.PortPrefix + SensorPort;
+            txtSensorPort.Text = "COM" + SensorPort;
             UpdateSensorConnection();
         }
 
@@ -351,7 +351,7 @@ namespace Netytar
 
         private void UpdateSensorConnection()
         {
-            txtSensorPort.Text = Rack.DMIBox.SensorReader.PortPrefix + SensorPort.ToString();
+            txtSensorPort.Text = "COM" + SensorPort.ToString();
 
             if (Rack.DMIBox.SensorReader.Connect(SensorPort))
             {
