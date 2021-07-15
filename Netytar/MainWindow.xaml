@@ -220,6 +220,7 @@
                                 TileMode="Tile" />
                         </Button.Background>
                     </Button>
+                    
                     <Button
                         Name="btnCtrlEyePos"
                         Grid.Row="2"
@@ -238,6 +239,7 @@
                                 TileMode="Tile" />
                         </Button.Background>
                     </Button>
+                    
                     <Button
                         Name="btnCtrlEyeVel"
                         Grid.Row="3"
@@ -663,6 +665,7 @@
                         FontFamily="Magneto"
                         FontSize="18"
                         Foreground="White" />
+                    
 
                 </Grid>
 
@@ -703,6 +706,117 @@
                     </Border>
                 </Grid-->
 
+                <Grid Grid.Row="7" Margin="10,10,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Slider
+                        Grid.Row="0"
+                        Name="sldDistance"
+                        HorizontalAlignment="Stretch"
+                        Minimum="50"
+                        Maximum="400"
+                        Thumb.DragCompleted="sldDistance_DragCompleted" Height="18" Margin="0,0,-0.2,0" Grid.RowSpan="2" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.5" 
+                        
+                     />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button
+                        Name="btnRemoveSharps"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="White"
+                        BorderThickness="2"
+                        Click="btnRemoveSharps_Click"   >
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/MidWood.png"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+                        </Button>
+                        <Border
+                            Name="indShowSharps"
+                            Grid.Column="1"
+                            Width="20"
+                            Height="20"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Background="Black"
+                            BorderBrush="White"
+                            BorderThickness="2"
+                            CornerRadius="10" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="22,0,0,0"
+                            Content="Sharp notes"
+                            FontFamily="Magneto"
+                            FontSize="18"
+                            Foreground="White" />
+                        
+                    </Grid>
+                    
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button
+                        Name="btnBlinkSelectScale"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="Auto"
+                        Height="Auto"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="White"
+                        BorderThickness="2"
+                        Click="btnBlinkSelectScale_Click"   >
+                            <Button.Background>
+                                <ImageBrush
+                                ImageSource="Images/Backgrounds/MidWood.png"
+                                Stretch="None"
+                                TileMode="Tile" />
+                            </Button.Background>
+                        </Button>
+                        <Border
+                            Name="indBlinkSelectScale"
+                            Grid.Column="1"
+                            Width="20"
+                            Height="20"
+                            Margin="4,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Background="Black"
+                            BorderBrush="White"
+                            BorderThickness="2"
+                            CornerRadius="10" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="22,0,0,0"
+                            Content="Blink scale"
+                            FontFamily="Magneto"
+                            FontSize="18"
+                            Foreground="White" />
+                        
+                    </Grid>
+                </Grid>
+                
+
 
                 <!--  CALIBRATOR FOR EYECONTROL  -->
                 <Grid Grid.Row="7" Margin="5,1,5,1">
@@ -710,7 +824,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <Border
+                    <!--Border
                         Grid.Column="1"
                         Width="Auto"
                         Height="Auto"
@@ -732,7 +846,7 @@
                                 <SolidColorBrush Color="Black" />
                             </Button.Background>
                         </Button>
-                    </Border>
+                    </Border-->
                     <Border
                         Grid.Column="1"
                         Width="Auto"
@@ -761,7 +875,7 @@
                             </Button.Background>
                         </Button>
                     </Border>
-                    <Border
+                    <!--Border
                         Grid.Column="0"
                         Grid.ColumnSpan="1"
                         Width="Auto"
@@ -777,7 +891,7 @@
                             Foreground="White"
                             Text=""
                             TextAlignment="Left" />
-                    </Border>
+                    </Border-->
                 </Grid>
             </Grid>
         </Border>
@@ -826,8 +940,9 @@
                 </TabItem>
             </TabControl>
         </Border>
-
-        <Button
+        
+        
+        <!--Button
             x:Name="lblSettings"
             Grid.ColumnSpan="2"
             Width="158"
@@ -848,7 +963,20 @@
                     Stretch="Fill"
                     TileMode="Tile" />
             </Button.Background>
-        </Button>
+        </Button-->
+        <Label
+            x:Name="lblSettigs"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Width="170"
+            Height="44"
+            Margin="15,21,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Settings"
+            FontFamily="Magneto"
+            FontSize="28"
+            Foreground="White" />
         <Label
             x:Name="lblSolo"
             Grid.Column="1"
@@ -861,23 +989,5 @@
             FontFamily="Magneto"
             FontSize="28"
             Foreground="White" />
-        <Button
-            Grid.Column="1"
-            Width="50"
-            Height="50"
-            Margin="105,15,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="Button_Play"
-            Content="PLAY" />
-        <Button
-            Grid.Column="1"
-            Width="50"
-            Height="50"
-            Margin="170,15,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="Button_Stop"
-            Content="STOP" />
     </Grid>
 </Window>

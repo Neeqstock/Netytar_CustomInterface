@@ -34,21 +34,20 @@ namespace Netytar.DMIbox
             midiDeviceFinder.SetToLastDevice();
 
             // EYETRACKER
-            if(Rack.DMIBox.Eyetracker == Eyetracker.Tobii)
+            if (Rack.DMIBox.Eyetracker == _Eyetracker.Tobii)
             {
                 Rack.DMIBox.TobiiModule = new TobiiModule(GazePointDataMode.Unfiltered);
                 Rack.DMIBox.TobiiModule.HeadPoseBehaviors.Add(new HPBpitchPlay(10, 15, 1.5f, 30f));
                 Rack.DMIBox.TobiiModule.HeadPoseBehaviors.Add(new HPBvelocityPlay(8, 12, 2f, 120f, 0.2f));
             }
 
-            if(Rack.DMIBox.Eyetracker == Eyetracker.Eyetribe)
+            if (Rack.DMIBox.Eyetracker == _Eyetracker.Eyetribe)
             {
                 Rack.DMIBox.EyeTribeModule = new EyeTribeModule();
                 Rack.DMIBox.EyeTribeModule.Start();
                 Rack.DMIBox.EyeTribeModule.MouseEmulator = new MouseEmulator(new PointFilterBypass());
                 Rack.DMIBox.EyeTribeModule.MouseEmulatorGazeMode = GazeMode.Raw;
             }
-
 
             // MISCELLANEOUS
             Rack.DMIBox.SensorReader = new SensorModule(9600);
@@ -65,10 +64,10 @@ namespace Netytar.DMIbox
             //Rack.DMIBox.SensorReader.Behaviors.Add(new SBaccelerometerTest());
             Rack.DMIBox.SensorReader.Behaviors.Add(new SBreadSerial());
 
-
             // SURFACE INIT
             Rack.DMIBox.AutoScroller = new AutoScroller(Rack.DMIBox.NetytarMainWindow.scrlNetytar, 0, 100, new PointFilterMAExpDecaying(0.1f)); // OLD was 100, 0.1f
             Rack.DMIBox.NetytarSurface = new NetytarSurface(Rack.DMIBox.NetytarMainWindow.canvasNetytar, Rack.DrawMode);
+
             Rack.DMIBox.NetytarSurface.DrawButtons();
             Rack.DMIBox.NetytarSurface.Scale = ScalesFactory.Cmaj;
         }

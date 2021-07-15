@@ -8,6 +8,6 @@
         public static IUserSettings UserSettings { get; set; } = new DefaultUserSettings();
         public static IColorCode ColorCode { get; set; } = new DefaultColorCode();
         public static IButtonsSettings ButtonsSettings { get; set; } = new DefaultButtonSettings();
-        public static NetytarSurfaceDrawModes DrawMode { get; set; } = NetytarSurfaceDrawModes.OnlyScaleLines;
+        public static NetytarSurfaceLineModes DrawMode { get; set; } = NetytarSurfaceLineModes.OnlyScaleLines;
     }
 }

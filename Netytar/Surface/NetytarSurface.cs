@@ -12,7 +12,7 @@ using WpfAnimatedGif;
 
 namespace Netytar
 {
-    public enum NetytarSurfaceDrawModes
+    public enum NetytarSurfaceLineModes
     {
         AllLines,
         OnlyScaleLines,
@@ -32,17 +32,18 @@ namespace Netytar
         private NetytarButton lastCheckedButton;
         private Scale scale = ScalesFactory.Cmaj;
         public NetytarButton CheckedButton { get => checkedButton; }
-        public NetytarSurfaceDrawModes DrawMode { get; set; } = NetytarSurfaceDrawModes.OnlyScaleLines;
+        public NetytarSurfaceLineModes DrawMode { get; set; } = NetytarSurfaceLineModes.OnlyScaleLines;
         public NetytarSurfaceHighlightModes HighLightMode { get; set; }
 
         public Scale Scale
         {
             get { return scale; }
-            set { scale = value; DrawScale(); }
+            set { scale = value; DrawButtons(); }
         }
 
         #region Settings
 
+        private _SharpNotesModes sharpNotesMode;
         private int ellipseRadius;
 
         private int generativePitch;
@@ -85,13 +86,17 @@ namespace Netytar
 
         #endregion Surface components
 
-        public NetytarSurface(Canvas canvas, NetytarSurfaceDrawModes drawMode)
+        public NetytarSurface(Canvas canvas, NetytarSurfaceLineModes drawMode)
         {
             LoadSettings();
             this.DrawMode = drawMode;
 
             this.canvas = canvas;
+            ResetCanvasDimensions();
+        }
 
+        private void ResetCanvasDimensions()
+        {
             canvas.Width = startPositionX * 2 + (horizontalSpacer + 13) * (nCols - 1);
             canvas.Height = startPositionY * 2 + (verticalSpacer + 13) * (nRows - 1);
         }
@@ -125,6 +130,7 @@ namespace Netytar
         {
             ClearButtons();
             LoadSettings();
+            ResetCanvasDimensions();
 
             if (canvas.Children.Contains(highlighter))
             {
@@ -170,6 +176,18 @@ namespace Netytar
 
                     netytarButtons[row, col] = new NetytarButton(this);
 
+                    #region Define note
+
+                    int calcPitch = generativePitch;
+                    calcPitch += col * 2 + row * 2;
+                    if (isPairRow)
+                    {
+                        calcPitch += 1;
+                    }
+                    netytarButtons[row, col].Note = PitchUtils.PitchToMidiNote(calcPitch);
+
+                    #endregion Define note
+
                     // Algoritmo che trova la posizione del pulsante
                     int X = startPositionX + firstSpacer + col * horizontalSpacer;
                     int Y = startPositionY + verticalSpacer * row;
@@ -191,29 +209,23 @@ namespace Netytar
                     // Aggiunge gli oggetti al canvas di Netytar
                     canvas.Children.Add(netytarButtons[row, col]);
                     canvas.Children.Add(netytarButtons[row, col].Occluder);
+                    if (sharpNotesMode == _SharpNotesModes.Off && !scale.IsInScale(netytarButtons[row, col].Note))
+                    {
+                        netytarButtons[row, col].Visibility = Visibility.Hidden;
+                        netytarButtons[row, col].Occluder.Visibility = Visibility.Hidden;
+                    }
 
                     #endregion Draw the button on canvas
 
                     // ===========================================================================
-
-                    #region Define note
-
-                    int calcPitch = generativePitch;
-                    calcPitch += col * 2 + row * 2;
-                    if (isPairRow)
-                    {
-                        calcPitch += 1;
-                    }
-                    netytarButtons[row, col].Note = PitchUtils.PitchToMidiNote(calcPitch);
-
-                    #endregion Define note
                 }
             }
+            DrawScale();
         }
 
         private void ClearButtons()
         {
-            if(netytarButtons != null)
+            if (netytarButtons != null)
             {
                 foreach (NetytarButton button in netytarButtons)
                 {
@@ -251,8 +263,16 @@ namespace Netytar
 
                         if (!scaleNotes.Contains(note))
                         {
-                            ellipse.Stroke = notInScaleBrush;
-                            ellipse.Fill = notInScaleBrush;
+                            if (sharpNotesMode == _SharpNotesModes.On)
+                            {
+                                ellipse.Stroke = notInScaleBrush;
+                                ellipse.Fill = notInScaleBrush;
+                            }
+                            else if (sharpNotesMode == _SharpNotesModes.Off)
+                            {
+                                ellipse.Stroke = new SolidColorBrush(Colors.Transparent);
+                                ellipse.Fill = new SolidColorBrush(Colors.Transparent);
+                            }
                         }
                         else
                         {
@@ -344,7 +364,7 @@ namespace Netytar
             if (netytarButtons != null)
             {
                 ClearLines();
-                if (DrawMode != NetytarSurfaceDrawModes.NoLines)
+                if (DrawMode != NetytarSurfaceLineModes.NoLines)
                 {
                     Brush inScaleBrush = new SolidColorBrush();
 
@@ -376,7 +396,7 @@ namespace Netytar
                     {
                         for (int col = 0; col < nCols; col++)
                         {
- #region Is row pair?
+                            #region Is row pair?
 
                             if (row % 2 != 0)
                             {
@@ -400,7 +420,7 @@ namespace Netytar
                                 }
                                 else
                                 {
-                                    if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                    if (DrawMode == NetytarSurfaceLineModes.OnlyScaleLines)
                                     {
                                         brush = transparentBrush;
                                     }
@@ -442,7 +462,7 @@ namespace Netytar
                                 }
                                 else
                                 {
-                                    if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                    if (DrawMode == NetytarSurfaceLineModes.OnlyScaleLines)
                                     {
                                         brush = transparentBrush;
                                     }
@@ -499,7 +519,7 @@ namespace Netytar
                                         }
                                         else
                                         {
-                                            if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                            if (DrawMode == NetytarSurfaceLineModes.OnlyScaleLines)
                                             {
                                                 brush = transparentBrush;
                                             }
@@ -538,7 +558,7 @@ namespace Netytar
                                         }
                                         else
                                         {
-                                            if (DrawMode == NetytarSurfaceDrawModes.OnlyScaleLines)
+                                            if (DrawMode == NetytarSurfaceLineModes.OnlyScaleLines)
                                             {
                                                 brush = transparentBrush;
                                             }
@@ -588,6 +608,7 @@ namespace Netytar
             lineThickness = Rack.UserSettings.LineThickness;
             occluderOffset = Rack.UserSettings.OccluderOffset;
             verticalSpacer = Rack.UserSettings.VerticalSpacer;
+            sharpNotesMode = Rack.UserSettings.SharpNotesMode;
 
             keysColorCode = Rack.ColorCode.KeysColorCode;
             notInScaleBrush = Rack.ColorCode.NotInScaleBrush;

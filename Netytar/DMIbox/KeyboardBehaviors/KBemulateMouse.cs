@@ -43,12 +43,12 @@ namespace Netytar
             switch (Rack.DMIBox.Eyetracker)
             {
 
-                case Eyetracker.Tobii:
+                case _Eyetracker.Tobii:
                     Rack.DMIBox.TobiiModule.MouseEmulator.EyetrackerToMouse = eyeTrackerToMouse;
                     Rack.DMIBox.TobiiModule.MouseEmulator.CursorVisible = cursorVisible;
                     Rack.DMIBox.AutoScroller.Enabled = autoScrollerEnabled;
                     break;
-                case Eyetracker.Eyetribe:
+                case _Eyetracker.Eyetribe:
                     Rack.DMIBox.EyeTribeModule.MouseEmulator.EyetrackerToMouse = eyeTrackerToMouse;
                     Rack.DMIBox.EyeTribeModule.MouseEmulator.CursorVisible = cursorVisible;
                     Rack.DMIBox.AutoScroller.Enabled = autoScrollerEnabled;

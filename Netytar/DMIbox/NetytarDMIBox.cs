@@ -11,20 +11,29 @@ namespace Netytar
     /// </summary>
     public class NetytarDMIBox : DMIBox
     {
-        public Eyetracker Eyetracker { get; set; } = Eyetracker.Tobii;
+        public _Eyetracker Eyetracker { get; set; } = _Eyetracker.Tobii;
         public MainWindow NetytarMainWindow { get; set; }
 
         public KeyboardModule KeyboardModule { get; set; }
 
+        private const _NetytarControlModes DEFAULT_NETYTARCONTROLMODE = _NetytarControlModes.Keyboard;
+        private const _ModulationControlModes DEFAULT_MODULATIONCONTROLMODE = _ModulationControlModes.On;
+        private const _BreathControlModes DEFAULT_BREATHCONTROLMODE = _BreathControlModes.Dynamic;
+        private const _SharpNotesModes DEFAULT_SHARPNOTESMODE = _SharpNotesModes.On;
         private string testString;
         public string TestString { get => testString; set => testString = value; }
 
-        private NetytarControlModes netytarControlMode = NetytarControlModes.Keyboard;
-        public NetytarControlModes NetytarControlMode { get => netytarControlMode; set { netytarControlMode = value; ResetModulationAndPressure(); } }
-        private ModulationControlModes modulationControlMode = ModulationControlModes.On;
-        public ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
-        private BreathControlModes breathControlMode = BreathControlModes.Dynamic;
-        public BreathControlModes BreathControlMode { get => breathControlMode; set { breathControlMode = value; ResetModulationAndPressure(); } }
+        #region Switchable
+
+        private _NetytarControlModes netytarControlMode = DEFAULT_NETYTARCONTROLMODE;
+        public _NetytarControlModes NetytarControlMode { get => netytarControlMode; set { netytarControlMode = value; ResetModulationAndPressure(); } }
+
+        private _ModulationControlModes modulationControlMode = DEFAULT_MODULATIONCONTROLMODE;
+        public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
+
+        private _BreathControlModes breathControlMode = DEFAULT_BREATHCONTROLMODE;
+        public _BreathControlModes BreathControlMode { get => breathControlMode; set { breathControlMode = value; ResetModulationAndPressure(); } }
+        #endregion Switchable
 
         private Button lastGazedButton = new Button();
         public Button LastGazedButton { get => lastGazedButton; set => lastGazedButton = value; }
@@ -32,6 +41,7 @@ namespace Netytar
         public bool HasAButtonGaze { get => hasAButtonGaze; set => hasAButtonGaze = value; }
 
         #region Instrument logic
+
         private bool blow = false;
         private int velocity = 127;
         private int pressure = 127;
@@ -51,7 +61,7 @@ namespace Netytar
             get { return blow; }
             set
             {
-                if(value != blow)
+                if (value != blow)
                 {
                     blow = value;
                     if (blow == true)
@@ -62,16 +72,16 @@ namespace Netytar
                     {
                         StopSelectedNote();
                     }
-                }   
+                }
             }
-            
         }
+
         public int Pressure
         {
             get { return pressure; }
             set
             {
-                if(BreathControlMode == BreathControlModes.Dynamic)
+                if (BreathControlMode == _BreathControlModes.Dynamic)
                 {
                     if (value < 50 && value > 1)
                     {
@@ -91,19 +101,20 @@ namespace Netytar
                     }
                     SetPressure();
                 }
-                if(BreathControlMode == BreathControlModes.Switch)
+                if (BreathControlMode == _BreathControlModes.Switch)
                 {
                     pressure = 127;
                     SetPressure();
                 }
             }
         }
+
         public int Modulation
         {
             get { return modulation; }
             set
             {
-                if(ModulationControlMode == ModulationControlModes.On)
+                if (ModulationControlMode == _ModulationControlModes.On)
                 {
                     if (value < 50 && value > 1)
                     {
@@ -123,7 +134,7 @@ namespace Netytar
                     }
                     SetModulation();
                 }
-                else if (ModulationControlMode == ModulationControlModes.Off)
+                else if (ModulationControlMode == _ModulationControlModes.Off)
                 {
                     modulation = 0;
                     SetModulation();
@@ -156,7 +167,7 @@ namespace Netytar
             get { return selectedNote; }
             set
             {
-                if(value != selectedNote)
+                if (value != selectedNote)
                 {
                     StopSelectedNote();
                     selectedNote = value;
@@ -172,34 +183,43 @@ namespace Netytar
         {
             MidiModule.StopNote((int)selectedNote);
         }
+
         private void PlaySelectedNote()
         {
             MidiModule.PlayNote((int)selectedNote, velocity);
         }
+
         private void SetPressure()
         {
             MidiModule.SetPressure(pressure);
         }
+
         private void SetModulation()
         {
             MidiModule.SetModulation(Modulation);
         }
-        #endregion
+
+        #endregion Instrument logic
 
         #region Graphic components
+
         private AutoScroller autoScroller;
         public AutoScroller AutoScroller { get => autoScroller; set => autoScroller = value; }
-        
+
         private NetytarSurface netytarSurface;
         public NetytarSurface NetytarSurface { get => netytarSurface; set => netytarSurface = value; }
-        #endregion
+
+        #endregion Graphic components
 
         #region Extra sensors
+
         private SensorModule sensorReader;
         public SensorModule SensorReader { get => sensorReader; set => sensorReader = value; }
-        #endregion
+
+        #endregion Extra sensors
 
         #region Shared values
+
         private double eyePosBaseX = 0;
         private double eyePosBaseY = 0;
         private double eyePosBaseZ = 0;
@@ -230,12 +250,12 @@ namespace Netytar
         public int AccX { get => accX; set => accX = value; }
         public int AccY { get => accY; set => accY = value; }
         public int AccZ { get => accZ; set => accZ = value; }
-        public int GyroCalibX { get => gyroX - GyroBaseX;}
-        public int GyroCalibY { get => gyroY - GyroBaseY;}
-        public int GyroCalibZ { get => gyroZ - GyroBaseZ;}
-        public int AccCalibX { get => accX - GyroBaseX;}
-        public int AccCalibY { get => accY - GyroBaseY;}
-        public int AccCalibZ { get => accZ - GyroBaseZ;}
+        public int GyroCalibX { get => gyroX - GyroBaseX; }
+        public int GyroCalibY { get => gyroY - GyroBaseY; }
+        public int GyroCalibZ { get => gyroZ - GyroBaseZ; }
+        public int AccCalibX { get => accX - GyroBaseX; }
+        public int AccCalibY { get => accY - GyroBaseY; }
+        public int AccCalibZ { get => accZ - GyroBaseZ; }
 
         public void Dispose()
         {
@@ -245,7 +265,6 @@ namespace Netytar
             }
             catch
             {
-
             }
             try
             {
@@ -253,9 +272,7 @@ namespace Netytar
             }
             catch
             {
-
             }
-
         }
 
         public void CalibrateGyroBase()
@@ -271,16 +288,17 @@ namespace Netytar
             Rack.DMIBox.accBaseY = accY;
             Rack.DMIBox.accBaseZ = accZ;
         }
-        #endregion
+
+        #endregion Shared values
     }
 
-    public enum Eyetracker
+    public enum _Eyetracker
     {
         Tobii,
         Eyetribe
     }
 
-    public enum NetytarControlModes
+    public enum _NetytarControlModes
     {
         Keyboard,
         BreathSensor,
@@ -288,15 +306,27 @@ namespace Netytar
         EyeVel
     }
 
-    public enum ModulationControlModes
+    public enum _ModulationControlModes
     {
         On,
         Off
     }
 
-    public enum BreathControlModes
+    public enum _BreathControlModes
     {
         Dynamic,
         Switch
+    }
+
+    public enum _SharpNotesModes
+    {
+        On,
+        Off
+    }
+
+    public enum _BlinkSelectScaleMode
+    {
+        On,
+        Off
     }
 }

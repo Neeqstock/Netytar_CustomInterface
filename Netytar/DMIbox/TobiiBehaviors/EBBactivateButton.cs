@@ -13,7 +13,7 @@ namespace Netytar.DMIbox.TobiiBehaviors
 
         public override void Event_doubleClose()
         {
-            if(Rack.DMIBox.NetytarControlMode == NetytarControlModes.EyePos)
+            if(Rack.DMIBox.NetytarControlMode == _NetytarControlModes.EyePos)
             {
                 if (Rack.DMIBox.HasAButtonGaze)
                 {

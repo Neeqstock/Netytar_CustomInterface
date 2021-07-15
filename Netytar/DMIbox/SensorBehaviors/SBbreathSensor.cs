@@ -19,7 +19,7 @@ namespace Netytar.DMIbox.SensorBehaviors
 
         public void ReceiveSensorRead(string val)
         {
-            if(Rack.DMIBox.NetytarControlMode == NetytarControlModes.BreathSensor)
+            if(Rack.DMIBox.NetytarControlMode == _NetytarControlModes.BreathSensor)
             {
                 float b = 0;
 

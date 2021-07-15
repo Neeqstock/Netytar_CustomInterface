@@ -144,6 +144,7 @@ namespace Netytar
             LineThickness = lineThickness;
             HighlightStrokeDim = highlightStrokeDim;
             HighlightRadius = highlightRadius;
+            
         }
 
         public int VerticalSpacer { get; set; }
@@ -159,6 +160,8 @@ namespace Netytar
         public int HighlightStrokeDim { get; set; }
 
         public int HighlightRadius { get; set; }
+        
+        public _SharpNotesModes SharpNotesMode { get; set; }
     }
 }
 

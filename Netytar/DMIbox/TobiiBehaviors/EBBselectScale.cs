@@ -21,16 +21,21 @@ namespace Netytar.DMIbox.TobiiBehaviors
 
         public override void Event_leftClose()
         {
-            Rack.DMIBox.NetytarMainWindow.SelectedScale = new Scale(Rack.DMIBox.NetytarSurface.CheckedButton.Note.ToAbsNote(), ScaleCodes.maj);
+            if(Rack.UserSettings.BlinkSelectScaleMode == _BlinkSelectScaleMode.On)
+            {
+                Rack.DMIBox.NetytarMainWindow.SelectedScale = new Scale(Rack.DMIBox.NetytarSurface.CheckedButton.Note.ToAbsNote(), ScaleCodes.maj);
+            }
         }
 
         public override void Event_leftOpen() { }
 
         public override void Event_rightClose()
         {
-            Rack.DMIBox.NetytarMainWindow.SelectedScale = new Scale(Rack.DMIBox.NetytarSurface.CheckedButton.Note.ToAbsNote(), ScaleCodes.min);
+            if (Rack.UserSettings.BlinkSelectScaleMode == _BlinkSelectScaleMode.On)
+            {
+                Rack.DMIBox.NetytarMainWindow.SelectedScale = new Scale(Rack.DMIBox.NetytarSurface.CheckedButton.Note.ToAbsNote(), ScaleCodes.min);
+            }
         }
-
         public override void Event_rightOpen() { }
     }
 }
