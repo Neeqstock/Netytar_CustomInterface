@@ -1,4 +1,6 @@
-﻿namespace Netytar
+﻿using Netytar.DMIbox;
+
+namespace Netytar
 {
     internal static class Rack
     {

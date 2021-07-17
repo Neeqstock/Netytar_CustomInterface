@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Netytar.DMIbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace Netytar
         _SharpNotesModes SharpNotesMode { get; set; }
         _BlinkSelectScaleMode BlinkSelectScaleMode { get; set; }
         _BreathControlModes BreathControlMode { get; set; }
-        _NetytarControlModes NetytarControlModes { get; set; }
+        _NetytarControlModes NetytarControlMode { get; set; }
+        _SlidePlayModes SlidePlayMode { get; set; }
     }
 }

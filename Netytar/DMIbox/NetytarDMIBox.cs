@@ -4,40 +4,38 @@ using NeeqDMIs.Keyboard;
 using NeeqDMIs.Music;
 using System.Windows.Controls;
 
-namespace Netytar
+namespace Netytar.DMIbox
 {
     /// <summary>
     /// DMIBox for Netytar, implementing the internal logic of the instrument.
     /// </summary>
     public class NetytarDMIBox : DMIBox
     {
-        public _Eyetracker Eyetracker { get; set; } = _Eyetracker.Tobii;
-        public MainWindow NetytarMainWindow { get; set; }
-
-        public KeyboardModule KeyboardModule { get; set; }
-
         private const _NetytarControlModes DEFAULT_NETYTARCONTROLMODE = _NetytarControlModes.Keyboard;
         private const _ModulationControlModes DEFAULT_MODULATIONCONTROLMODE = _ModulationControlModes.On;
         private const _BreathControlModes DEFAULT_BREATHCONTROLMODE = _BreathControlModes.Dynamic;
         private const _SharpNotesModes DEFAULT_SHARPNOTESMODE = _SharpNotesModes.On;
         private string testString;
+        private Button lastGazedButton = new Button();
+        private bool hasAButtonGaze = false;
+        public _Eyetracker Eyetracker { get; set; } = _Eyetracker.Tobii;
+        public MainWindow NetytarMainWindow { get; set; }
+
+        public KeyboardModule KeyboardModule { get; set; }
         public string TestString { get => testString; set => testString = value; }
 
         #region Switchable
 
         private _NetytarControlModes netytarControlMode = DEFAULT_NETYTARCONTROLMODE;
-        public _NetytarControlModes NetytarControlMode { get => netytarControlMode; set { netytarControlMode = value; ResetModulationAndPressure(); } }
-
         private _ModulationControlModes modulationControlMode = DEFAULT_MODULATIONCONTROLMODE;
-        public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
-
         private _BreathControlModes breathControlMode = DEFAULT_BREATHCONTROLMODE;
+        public _NetytarControlModes NetytarControlMode { get => netytarControlMode; set { netytarControlMode = value; ResetModulationAndPressure(); } }
+        public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
         public _BreathControlModes BreathControlMode { get => breathControlMode; set { breathControlMode = value; ResetModulationAndPressure(); } }
+
         #endregion Switchable
 
-        private Button lastGazedButton = new Button();
         public Button LastGazedButton { get => lastGazedButton; set => lastGazedButton = value; }
-        private bool hasAButtonGaze = false;
         public bool HasAButtonGaze { get => hasAButtonGaze; set => hasAButtonGaze = value; }
 
         #region Instrument logic
@@ -47,32 +45,46 @@ namespace Netytar
         private int pressure = 127;
         private int modulation = 0;
         private MidiNotes selectedNote = MidiNotes.C5;
-
-        public void ResetModulationAndPressure()
-        {
-            Blow = false;
-            Modulation = 0;
-            Pressure = 127;
-            Velocity = 127;
-        }
+        private MidiNotes nextNote = MidiNotes.C5;
 
         public bool Blow
         {
             get { return blow; }
             set
             {
-                if (value != blow)
+                switch (Rack.UserSettings.SlidePlayMode)
                 {
-                    blow = value;
-                    if (blow == true)
-                    {
-                        PlaySelectedNote();
-                    }
-                    else
-                    {
-                        StopSelectedNote();
-                    }
+                    case _SlidePlayModes.On:
+                        if (value != blow)
+                        {
+                            blow = value;
+                            if (blow == true)
+                            {
+                                PlaySelectedNote();
+                            }
+                            else
+                            {
+                                StopSelectedNote();
+                            }
+                        }
+                        break;
+                    case _SlidePlayModes.Off:
+                        if (value != blow)
+                        {
+                            blow = value;
+                            if (blow == true)
+                            {
+                                selectedNote = nextNote;
+                                PlaySelectedNote();
+                            }
+                            else
+                            {
+                                StopSelectedNote();
+                            }
+                        }
+                        break;
                 }
+                
             }
         }
 
@@ -167,16 +179,35 @@ namespace Netytar
             get { return selectedNote; }
             set
             {
-                if (value != selectedNote)
+                switch (Rack.UserSettings.SlidePlayMode)
                 {
-                    StopSelectedNote();
-                    selectedNote = value;
-                    if (blow)
-                    {
-                        PlaySelectedNote();
-                    }
+                    case _SlidePlayModes.On:
+                        if (value != selectedNote)
+                        {
+                            StopSelectedNote();
+                            selectedNote = value;
+                            if (blow)
+                            {
+                                PlaySelectedNote();
+                            }
+                        }
+                        break;
+                    case _SlidePlayModes.Off:
+                        if (value != selectedNote)
+                        {
+                            nextNote = value;
+                        }
+                        break;
                 }
             }
+        }
+
+        public void ResetModulationAndPressure()
+        {
+            Blow = false;
+            Modulation = 0;
+            Pressure = 127;
+            Velocity = 127;
         }
 
         private void StopSelectedNote()
@@ -204,9 +235,8 @@ namespace Netytar
         #region Graphic components
 
         private AutoScroller autoScroller;
-        public AutoScroller AutoScroller { get => autoScroller; set => autoScroller = value; }
-
         private NetytarSurface netytarSurface;
+        public AutoScroller AutoScroller { get => autoScroller; set => autoScroller = value; }
         public NetytarSurface NetytarSurface { get => netytarSurface; set => netytarSurface = value; }
 
         #endregion Graphic components
@@ -290,43 +320,5 @@ namespace Netytar
         }
 
         #endregion Shared values
-    }
-
-    public enum _Eyetracker
-    {
-        Tobii,
-        Eyetribe
-    }
-
-    public enum _NetytarControlModes
-    {
-        Keyboard,
-        BreathSensor,
-        EyePos,
-        EyeVel
-    }
-
-    public enum _ModulationControlModes
-    {
-        On,
-        Off
-    }
-
-    public enum _BreathControlModes
-    {
-        Dynamic,
-        Switch
-    }
-
-    public enum _SharpNotesModes
-    {
-        On,
-        Off
-    }
-
-    public enum _BlinkSelectScaleMode
-    {
-        On,
-        Off
     }
 }

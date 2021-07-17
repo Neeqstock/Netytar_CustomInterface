@@ -15,46 +15,20 @@ namespace Netytar
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int BreathMax = 340;
+        private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightGreen);
+        private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
+        private readonly SolidColorBrush BlankBrush = new SolidColorBrush(Colors.Black);
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
 
         private int breathSensorValue = 0;
-        public int BreathSensorValue { get => breathSensorValue; set => breathSensorValue = value; }
-
-        private WpfInteractorAgent wpfInteractorAgent;
-
         private Scale StartingScale = ScalesFactory.Cmaj;
-
         private Scale lastScale;
         private Scale selectedScale;
-        public Scale SelectedScale { get => selectedScale; set => selectedScale = value; }
-
-        private const int BreathMax = 340;
-
-        private readonly SolidColorBrush ActiveBrush = new SolidColorBrush(Colors.LightGreen);
-        private readonly SolidColorBrush WarningBrush = new SolidColorBrush(Colors.DarkRed);
-        private readonly SolidColorBrush BlankBrush = new SolidColorBrush(Colors.Black);
-
         private int sensorPort = 11;
-
-        public int SensorPort
-        {
-            get { return sensorPort; }
-            set
-            {
-                if (value > 0)
-                {
-                    sensorPort = value;
-                }
-            }
-        }
-
-        public WpfInteractorAgent WpfInteractorAgent { get => wpfInteractorAgent; set => wpfInteractorAgent = value; }
-
         private bool NetytarStarted = false;
-
         private Timer updater;
-
         private double velocityBarMaxHeight = 0;
 
         public MainWindow()
@@ -69,9 +43,45 @@ namespace Netytar
 
             lastScale = StartingScale;
             SelectedScale = StartingScale;
+        }
 
-            //Behaviors.SetIsGazeAware(btnNetytarSelect, true);
-            //Behaviors.AddHasGazeChangedHandler(btnNetytarSelect, eyeGazeHandler);
+        public int BreathSensorValue { get => breathSensorValue; set => breathSensorValue = value; }
+
+        public Scale SelectedScale { get => selectedScale; set => selectedScale = value; }
+
+        public int SensorPort
+        {
+            get { return sensorPort; }
+            set
+            {
+                if (value > 0)
+                {
+                    sensorPort = value;
+                }
+            }
+        }
+
+        public void ReceiveNoteChange()
+        {
+            txtPitch.Text = Rack.DMIBox.SelectedNote.ToPitchValue().ToString();
+            txtNoteName.Text = Rack.DMIBox.SelectedNote.ToStandardString();
+        }
+
+        public void ReceiveBlowingChange()
+        {
+            if (Rack.DMIBox.Blow)
+            {
+                txtIsBlowing.Text = "B";
+            }
+            else
+            {
+                txtIsBlowing.Text = "_";
+            }
+        }
+
+        internal void ChangeScale(ScaleCodes scaleCode)
+        {
+            Rack.DMIBox.NetytarSurface.Scale = new Scale(Rack.DMIBox.SelectedNote.ToAbsNote(), scaleCode);
         }
 
         private void eyeGazeHandler(object sender, HasGazeChangedRoutedEventArgs e)
@@ -235,6 +245,17 @@ namespace Netytar
                     indBlinkSelectScale.Background = WarningBrush;
                     break;
             }
+
+            switch (Rack.UserSettings.SlidePlayMode)
+            {
+                case _SlidePlayModes.On:
+                    indSlidePlay.Background = ActiveBrush;
+                    break;
+
+                case _SlidePlayModes.Off:
+                    indSlidePlay.Background = WarningBrush;
+                    break;
+            }
         }
 
         private void CheckMidiPort()
@@ -274,29 +295,6 @@ namespace Netytar
             {
                 ListBoxItem item = new ListBoxItem() { Content = scale.GetName() };
                 lstScaleChanger.Items.Add(item);
-            }
-        }
-
-        internal void ChangeScale(ScaleCodes scaleCode)
-        {
-            Rack.DMIBox.NetytarSurface.Scale = new Scale(Rack.DMIBox.SelectedNote.ToAbsNote(), scaleCode);
-        }
-
-        public void ReceiveNoteChange()
-        {
-            txtPitch.Text = Rack.DMIBox.SelectedNote.ToPitchValue().ToString();
-            txtNoteName.Text = Rack.DMIBox.SelectedNote.ToStandardString();
-        }
-
-        public void ReceiveBlowingChange()
-        {
-            if (Rack.DMIBox.Blow)
-            {
-                txtIsBlowing.Text = "B";
-            }
-            else
-            {
-                txtIsBlowing.Text = "_";
             }
         }
 
@@ -497,12 +495,6 @@ namespace Netytar
             }
         }
 
-        //private void lblSettings_Click(object sender, RoutedEventArgs e)
-        //{
-            //Settings win = new Settings();
-            //win.ShowDialog();
-        //}
-
         private void Button_Play(object sender, RoutedEventArgs e)
         {
             if (outputDevice == null)
@@ -531,7 +523,6 @@ namespace Netytar
             audioFile = null;
         }
 
-
         private void sldDistance_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             if (NetytarStarted)
@@ -546,11 +537,11 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                if(Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off)
+                if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off)
                 {
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.On;
                 }
-                else if(Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
+                else if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.On)
                 {
                     Rack.UserSettings.SharpNotesMode = _SharpNotesModes.Off;
                 }
@@ -564,13 +555,34 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                if (Rack.UserSettings.BlinkSelectScaleMode == _BlinkSelectScaleMode.Off)
+                switch (Rack.UserSettings.BlinkSelectScaleMode)
                 {
-                    Rack.UserSettings.BlinkSelectScaleMode = _BlinkSelectScaleMode.On;
+                    case _BlinkSelectScaleMode.Off:
+                        Rack.UserSettings.BlinkSelectScaleMode = _BlinkSelectScaleMode.On;
+                        break;
+
+                    case _BlinkSelectScaleMode.On:
+                        Rack.UserSettings.BlinkSelectScaleMode = _BlinkSelectScaleMode.Off;
+                        break;
                 }
-                else if (Rack.UserSettings.BlinkSelectScaleMode == _BlinkSelectScaleMode.On)
+
+                UpdateIndicators();
+            }
+        }
+
+        private void btnSlidePlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (NetytarStarted)
+            {
+                switch (Rack.UserSettings.SlidePlayMode)
                 {
-                    Rack.UserSettings.BlinkSelectScaleMode = _BlinkSelectScaleMode.Off;
+                    case _SlidePlayModes.Off:
+                        Rack.UserSettings.SlidePlayMode = _SlidePlayModes.On;
+                        break;
+
+                    case _SlidePlayModes.On:
+                        Rack.UserSettings.SlidePlayMode = _SlidePlayModes.Off;
+                        break;
                 }
 
                 UpdateIndicators();

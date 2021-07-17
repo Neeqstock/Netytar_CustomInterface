@@ -1,5 +1,6 @@
 ﻿using Eyerpheus.Controllers.Graphics;
 using NeeqDMIs.Music;
+using Netytar.DMIbox;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -31,6 +32,16 @@ namespace Netytar
         private Ellipse highlighter = new Ellipse();
         private NetytarButton lastCheckedButton;
         private Scale scale = ScalesFactory.Cmaj;
+
+        public NetytarSurface(Canvas canvas, NetytarSurfaceLineModes drawMode)
+        {
+            LoadSettings();
+            this.DrawMode = drawMode;
+
+            this.canvas = canvas;
+            ResetCanvasDimensions();
+        }
+
         public NetytarButton CheckedButton { get => checkedButton; }
         public NetytarSurfaceLineModes DrawMode { get; set; } = NetytarSurfaceLineModes.OnlyScaleLines;
         public NetytarSurfaceHighlightModes HighLightMode { get; set; }
@@ -85,21 +96,6 @@ namespace Netytar
         private NetytarButton[,] netytarButtons;
 
         #endregion Surface components
-
-        public NetytarSurface(Canvas canvas, NetytarSurfaceLineModes drawMode)
-        {
-            LoadSettings();
-            this.DrawMode = drawMode;
-
-            this.canvas = canvas;
-            ResetCanvasDimensions();
-        }
-
-        private void ResetCanvasDimensions()
-        {
-            canvas.Width = startPositionX * 2 + (horizontalSpacer + 13) * (nCols - 1);
-            canvas.Height = startPositionY * 2 + (verticalSpacer + 13) * (nRows - 1);
-        }
 
         public void ClearEllipses()
         {
@@ -209,7 +205,7 @@ namespace Netytar
                     // Aggiunge gli oggetti al canvas di Netytar
                     canvas.Children.Add(netytarButtons[row, col]);
                     canvas.Children.Add(netytarButtons[row, col].Occluder);
-                    if (sharpNotesMode == _SharpNotesModes.Off && !scale.IsInScale(netytarButtons[row, col].Note))
+                    if (Rack.UserSettings.SharpNotesMode == _SharpNotesModes.Off && !scale.IsInScale(netytarButtons[row, col].Note))
                     {
                         netytarButtons[row, col].Visibility = Visibility.Hidden;
                         netytarButtons[row, col].Occluder.Visibility = Visibility.Hidden;
@@ -221,21 +217,6 @@ namespace Netytar
                 }
             }
             DrawScale();
-        }
-
-        private void ClearButtons()
-        {
-            if (netytarButtons != null)
-            {
-                foreach (NetytarButton button in netytarButtons)
-                {
-                    canvas.Children.Remove(button);
-                    canvas.Children.Remove(button.Occluder);
-                }
-
-                netytarButtons = new NetytarButton[nRows, nCols];
-            }
-            netytarButtons = new NetytarButton[nRows, nCols];
         }
 
         public void DrawEllipses(Scale scale)
@@ -345,13 +326,62 @@ namespace Netytar
                 checkedButton = sender;
 
                 FlashMovementLine();
-                // FlashSpark();
 
                 if (HighLightMode == NetytarSurfaceHighlightModes.CurrentNote)
                 {
                     MoveHighlighter(CheckedButton);
                 }
             }
+        }
+
+        public void LoadSettings()
+        {
+            ellipseRadius = Rack.UserSettings.EllipseRadius;
+            horizontalSpacer = Rack.UserSettings.HorizontalSpacer;
+            lineThickness = Rack.UserSettings.LineThickness;
+            occluderOffset = Rack.UserSettings.OccluderOffset;
+            verticalSpacer = Rack.UserSettings.VerticalSpacer;
+            sharpNotesMode = Rack.UserSettings.SharpNotesMode;
+
+            keysColorCode = Rack.ColorCode.KeysColorCode;
+            notInScaleBrush = Rack.ColorCode.NotInScaleBrush;
+            majorBrush = Rack.ColorCode.MajorBrush;
+            minorBrush = Rack.ColorCode.MinorBrush;
+
+            generativePitch = Rack.ButtonsSettings.GenerativeNote;
+            nCols = Rack.ButtonsSettings.NCols;
+            nRows = Rack.ButtonsSettings.NRows;
+            startPositionX = Rack.ButtonsSettings.StartPositionX;
+            startPositionY = Rack.ButtonsSettings.StartPositionY;
+            occluderAlpha = Rack.ButtonsSettings.OccluderAlpha;
+
+            highlighter.Width = Rack.UserSettings.HighlightRadius;
+            highlighter.Height = Rack.UserSettings.HighlightRadius;
+            highlighter.StrokeThickness = Rack.UserSettings.HighlightStrokeDim;
+            highlighter.Stroke = Rack.ColorCode.HighlightBrush;
+
+            //canvas.Background =
+        }
+
+        private void ResetCanvasDimensions()
+        {
+            canvas.Width = startPositionX * 2 + (horizontalSpacer + 13) * (nCols - 1);
+            canvas.Height = startPositionY * 2 + (verticalSpacer + 13) * (nRows - 1);
+        }
+
+        private void ClearButtons()
+        {
+            if (netytarButtons != null)
+            {
+                foreach (NetytarButton button in netytarButtons)
+                {
+                    canvas.Children.Remove(button);
+                    canvas.Children.Remove(button.Occluder);
+                }
+
+                netytarButtons = new NetytarButton[nRows, nCols];
+            }
+            netytarButtons = new NetytarButton[nRows, nCols];
         }
 
         private void disposeImage(object sender, RoutedEventArgs e)
@@ -599,35 +629,6 @@ namespace Netytar
                     }
                 }
             }
-        }
-
-        public void LoadSettings()
-        {
-            ellipseRadius = Rack.UserSettings.EllipseRadius;
-            horizontalSpacer = Rack.UserSettings.HorizontalSpacer;
-            lineThickness = Rack.UserSettings.LineThickness;
-            occluderOffset = Rack.UserSettings.OccluderOffset;
-            verticalSpacer = Rack.UserSettings.VerticalSpacer;
-            sharpNotesMode = Rack.UserSettings.SharpNotesMode;
-
-            keysColorCode = Rack.ColorCode.KeysColorCode;
-            notInScaleBrush = Rack.ColorCode.NotInScaleBrush;
-            majorBrush = Rack.ColorCode.MajorBrush;
-            minorBrush = Rack.ColorCode.MinorBrush;
-
-            generativePitch = Rack.ButtonsSettings.GenerativeNote;
-            nCols = Rack.ButtonsSettings.NCols;
-            nRows = Rack.ButtonsSettings.NRows;
-            startPositionX = Rack.ButtonsSettings.StartPositionX;
-            startPositionY = Rack.ButtonsSettings.StartPositionY;
-            occluderAlpha = Rack.ButtonsSettings.OccluderAlpha;
-
-            highlighter.Width = Rack.UserSettings.HighlightRadius;
-            highlighter.Height = Rack.UserSettings.HighlightRadius;
-            highlighter.StrokeThickness = Rack.UserSettings.HighlightStrokeDim;
-            highlighter.Stroke = Rack.ColorCode.HighlightBrush;
-
-            //canvas.Background =
         }
 
         private void MoveHighlighter(NetytarButton checkedButton)
