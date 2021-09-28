@@ -21,5 +21,7 @@ namespace Netytar
         _BreathControlModes BreathControlMode { get; set; }
         _NetytarControlModes NetytarControlMode { get; set; }
         _SlidePlayModes SlidePlayMode { get; set; }
+        int SensorPort { get; set; }
+        int MIDIPort { get; set; }
     }
 }

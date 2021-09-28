@@ -26,7 +26,6 @@ namespace Netytar
         private Scale StartingScale = ScalesFactory.Cmaj;
         private Scale lastScale;
         private Scale selectedScale;
-        private int sensorPort = 11;
         private bool NetytarStarted = false;
         private Timer updater;
         private double velocityBarMaxHeight = 0;
@@ -51,12 +50,12 @@ namespace Netytar
 
         public int SensorPort
         {
-            get { return sensorPort; }
+            get { return Rack.UserSettings.SensorPort; }
             set
             {
                 if (value > 0)
                 {
-                    sensorPort = value;
+                    Rack.UserSettings.SensorPort = value;
                 }
             }
         }
@@ -147,12 +146,12 @@ namespace Netytar
             InitializeVolumeBar();
             InitializeSensorPortText();
 
-            if (Rack.DMIBox.NetytarControlMode == _NetytarControlModes.Keyboard)
+            if (Rack.UserSettings.NetytarControlMode == _NetytarControlModes.Keyboard)
             {
                 indCtrlKeyboard.Background = ActiveBrush;
             }
 
-            if (Rack.DMIBox.NetytarControlMode == _NetytarControlModes.BreathSensor)
+            if (Rack.UserSettings.NetytarControlMode == _NetytarControlModes.BreathSensor)
             {
                 indCtrlBreath.Background = ActiveBrush;
             }
@@ -167,11 +166,13 @@ namespace Netytar
             UpdateIndicators();
 
             NetytarStarted = true; // LEAVE AT THE END!
+
+            
         }
 
         private void UpdateIndicators()
         {
-            switch (Rack.DMIBox.NetytarControlMode)
+            switch (Rack.UserSettings.NetytarControlMode)
             {
                 case _NetytarControlModes.BreathSensor:
                     indCtrlKeyboard.Background = BlankBrush;
@@ -256,6 +257,12 @@ namespace Netytar
                     indSlidePlay.Background = WarningBrush;
                     break;
             }
+
+            sldDistance.Value = Rack.UserSettings.HorizontalSpacer;
+
+            /* MIDI */
+            lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
+            CheckMidiPort();
         }
 
         private void CheckMidiPort()
@@ -317,10 +324,12 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.MidiModule.OutDevice--;
-                lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
+                Rack.UserSettings.MIDIPort--;
+                Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
+                //lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
 
-                CheckMidiPort();
+                //CheckMidiPort();
+                UpdateIndicators();
             }
         }
 
@@ -328,10 +337,12 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.MidiModule.OutDevice++;
-                lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
+                Rack.UserSettings.MIDIPort++;
+                Rack.DMIBox.MidiModule.OutDevice = Rack.UserSettings.MIDIPort;
+                //lblMIDIch.Text = "MP" + Rack.DMIBox.MidiModule.OutDevice.ToString();
 
-                CheckMidiPort();
+                //CheckMidiPort();
+                UpdateIndicators();
             }
         }
 
@@ -339,7 +350,7 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.NetytarControlMode = _NetytarControlModes.Keyboard;
+                Rack.UserSettings.NetytarControlMode = _NetytarControlModes.Keyboard;
                 Rack.DMIBox.ResetModulationAndPressure();
 
                 breathSensorValue = 0;
@@ -352,7 +363,7 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.NetytarControlMode = _NetytarControlModes.BreathSensor;
+                Rack.UserSettings.NetytarControlMode = _NetytarControlModes.BreathSensor;
                 Rack.DMIBox.ResetModulationAndPressure();
 
                 breathSensorValue = 0;
@@ -403,7 +414,7 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.NetytarControlMode = _NetytarControlModes.EyePos;
+                Rack.UserSettings.NetytarControlMode = _NetytarControlModes.EyePos;
                 Rack.DMIBox.ResetModulationAndPressure();
 
                 breathSensorValue = 0;
@@ -486,7 +497,7 @@ namespace Netytar
         {
             if (NetytarStarted)
             {
-                Rack.DMIBox.NetytarControlMode = _NetytarControlModes.EyeVel;
+                Rack.UserSettings.NetytarControlMode = _NetytarControlModes.EyeVel;
                 Rack.DMIBox.ResetModulationAndPressure();
 
                 breathSensorValue = 0;

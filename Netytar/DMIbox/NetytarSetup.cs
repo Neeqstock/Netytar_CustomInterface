@@ -30,8 +30,9 @@ namespace Netytar.DMIbox
 
             // MIDI
             Rack.DMIBox.MidiModule = new MidiModuleNAudio(1, 1);
-            MidiDeviceFinder midiDeviceFinder = new MidiDeviceFinder(Rack.DMIBox.MidiModule);
-            midiDeviceFinder.SetToLastDevice();
+            //MidiDeviceFinder midiDeviceFinder = new MidiDeviceFinder(Rack.DMIBox.MidiModule);
+            //midiDeviceFinder.SetToLastDevice();
+            Rack.DMIBox.MidiModule.OutDevice = 1;
 
             // EYETRACKER
             if (Rack.DMIBox.Eyetracker == _Eyetracker.Tobii)
@@ -53,7 +54,11 @@ namespace Netytar.DMIbox
             Rack.DMIBox.SensorReader = new SensorModule(9600);
 
             // BEHAVIORS
+            //Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBemulateMouse());
+            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBautoScroller());
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBemulateMouse());
+            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBstopAutoScroller());
+            Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBstopEmulateMouse());
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBsimulateBlow());
             Rack.DMIBox.KeyboardModule.KeyboardBehaviors.Add(new KBselectScale());
 

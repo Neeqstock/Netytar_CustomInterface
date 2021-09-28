@@ -109,6 +109,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DMIbox\KeyboardBehaviors\KBautoScroller.cs" />
+    <Compile Include="DMIbox\KeyboardBehaviors\KBstopAutoScroller.cs" />
+    <Compile Include="DMIbox\KeyboardBehaviors\KBstopEmulateMouse.cs" />
     <Compile Include="DMIbox\SwitchableSelectors.cs" />
     <Compile Include="Surface\AutoScroller.cs" />
     <Compile Include="Surface\ButtonsSettings\DefaultButtonSettings.cs" />

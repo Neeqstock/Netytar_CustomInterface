@@ -26,10 +26,8 @@ namespace Netytar.DMIbox
 
         #region Switchable
 
-        private _NetytarControlModes netytarControlMode = DEFAULT_NETYTARCONTROLMODE;
         private _ModulationControlModes modulationControlMode = DEFAULT_MODULATIONCONTROLMODE;
         private _BreathControlModes breathControlMode = DEFAULT_BREATHCONTROLMODE;
-        public _NetytarControlModes NetytarControlMode { get => netytarControlMode; set { netytarControlMode = value; ResetModulationAndPressure(); } }
         public _ModulationControlModes ModulationControlMode { get => modulationControlMode; set { modulationControlMode = value; ResetModulationAndPressure(); } }
         public _BreathControlModes BreathControlMode { get => breathControlMode; set { breathControlMode = value; ResetModulationAndPressure(); } }
 

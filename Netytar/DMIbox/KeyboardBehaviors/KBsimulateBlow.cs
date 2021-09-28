@@ -15,7 +15,7 @@ namespace Netytar
         {
             returnVal = 0;
 
-            if(Rack.DMIBox.NetytarControlMode == _NetytarControlModes.Keyboard)
+            if(Rack.UserSettings.NetytarControlMode == _NetytarControlModes.Keyboard)
             {
                 if (e.VirtualKey == (ushort)keyBlow && e.KeyPressState == KeyPressState.Down)
                 {
